@@ -1,0 +1,20 @@
+datasources:
+  - access: 'proxy'
+    editable: true
+    is_default: true
+    name: 'Prometheus'
+    org_id: 1
+    type: 'prometheus' 
+    url: 'http://192.168.252.61:9090'
+    version: 1
+
+  - editable: true
+    is_default: false
+    name: 'external-db'
+    org_id: 1
+    type: 'influxdb'
+    url: 'http://192.168.252.64:8086'
+    database: '_internal'
+    user: 'admin'
+    password: 'password'
+    version: 1

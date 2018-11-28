@@ -1,0 +1,83 @@
+version: '3.3'
+
+services:
+  prometheus:
+    image: "prom/prometheus"
+    volumes:
+      - "./prometheus/:/etc/prometheus/"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    deploy:
+        mode: replicated
+        replicas: 2
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+
+  node-exporter:
+      image: prom/node-exporter
+      ports:
+        - '9100:9100'
+      volumes:
+        - '/proc:/host/proc'
+        - '/sys:/host/sys'
+        - '/:/rootfs'
+      command:
+        - '--path.procfs=/host/proc'
+        - '--path.sysfs=/host/sys'
+        - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+      deploy:
+        mode: global
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        resources:
+          limits:
+            cpus: '0.25'
+            memory: 50M
+          reservations:
+            cpus: '0.1'
+            memory: 10M
+  
+  alertmanager:
+    image: prom/alertmanager
+    ports: 
+      - 9093:9093
+    volumes:
+      - "./alertmanager/conf:/prometheus:ro"
+      - "./alertmanager/data:/data:rw"
+    command:
+      - '--config.file=/prometheus/config.yml'
+      - '--storage.path=/data'
+    deploy:
+        mode: replicated
+        replicas: 2
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+        resources:
+          limits:
+            cpus: '0.50'
+            memory: 50M
+    
+  cadvisor:
+    image: google/cadvisor
+    ports: 
+      - 8080:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/dev/disk/:/dev/disk:ro"

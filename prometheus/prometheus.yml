@@ -1,0 +1,71 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+      monitor: 'ptvn-prom'
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - "192.168.252.61:9093"
+
+rule_files:
+  - 'alert.rules'
+
+remote_write:
+ - url: "http://192.168.252.64:8086/api/v1/prom/write?u=prome&p=prometheus&db=promedb"
+
+remote_read:
+ - url: "http://192.168.252.64:8086/api/v1/prom/read?u=prome&p=prometheus&db=promedb"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    dns_sd_configs:
+    - names:
+      - 'prometheus-cen'
+      type: 'A'
+      port: 9090
+    static_configs:
+      - targets: ['192.168.252.61:9090']
+
+  - job_name: 'node-exporter'
+    dns_sd_configs:
+    - names:
+      - 'node-exporter'
+      type: 'A'
+      port: 9100
+    static_configs:
+      - targets: ['192.168.252.61:9100','192.168.10.219:9100','192.168.10.196:9100']
+        labels:
+          group: 'test-node-linux'
+  
+  - job_name: 'wmi-exporter'
+    dns_sd_configs:
+    - names:
+      - 'wmi-exporter'
+      type: 'A'
+      port: 9182
+    static_configs:
+      - targets: ['192.168.10.164:9182','192.168.10.241:9182']
+        labels:
+          group: 'test-node-windows'
+
+  - job_name: 'jmx-exporter'
+    dns_sd_configs:
+    - names:
+      - 'jmx-exporter'
+      type: 'A'
+      port: 9117
+    static_configs:
+      - targets: ['192.168.10.241:9117']
+        labels:
+          group: 'test-jmx-exporter'
+
+  - job_name: 'cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.252.61:8080','192.168.10.219:9090']
+        labels:
+          group: 'test-container-exporter'
