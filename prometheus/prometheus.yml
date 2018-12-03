@@ -2,7 +2,7 @@ global:
   scrape_interval:     15s
   evaluation_interval: 15s
   external_labels:
-      monitor: 'ptvn-prom'
+    monitor: 'ptvn-prom'
 
 alerting:
   alertmanagers:
@@ -12,13 +12,15 @@ alerting:
       - "192.168.252.61:9093"
 
 rule_files:
-  - 'alert.rules'
+  - "alert.rules"
+  # - "first.rules"
+  # - "second.rules"
 
 remote_write:
- - url: "http://192.168.252.64:8086/api/v1/prom/write?u=prome&p=prometheus&db=promedb"
+  - url: "http://192.168.252.64:8086/api/v1/prom/write?u=prome&p=prometheus&db=promedb"
 
 remote_read:
- - url: "http://192.168.252.64:8086/api/v1/prom/read?u=prome&p=prometheus&db=promedb"
+  - url: "http://192.168.252.64:8086/api/v1/prom/read?u=prome&p=prometheus&db=promedb"
 
 scrape_configs:
   - job_name: 'prometheus'

@@ -13,40 +13,40 @@ services:
     ports:
       - 9090:9090
     deploy:
-        mode: replicated
-        replicas: 2
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
   node-exporter:
-      image: prom/node-exporter
-      ports:
-        - '9100:9100'
-      volumes:
-        - '/proc:/host/proc'
-        - '/sys:/host/sys'
-        - '/:/rootfs'
-      command:
-        - '--path.procfs=/host/proc'
-        - '--path.sysfs=/host/sys'
-        - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
-      deploy:
-        mode: global
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-        resources:
-          limits:
-            cpus: '0.25'
-            memory: 50M
-          reservations:
-            cpus: '0.1'
-            memory: 10M
+    image: prom/node-exporter
+    ports:
+      - '9100:9100'
+    volumes:
+      - '/proc:/host/proc'
+      - '/sys:/host/sys'
+      - '/:/rootfs'
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 50M
+        reservations:
+          cpus: '0.1'
+          memory: 10M
   
   alertmanager:
     image: prom/alertmanager
@@ -59,16 +59,16 @@ services:
       - '--config.file=/prometheus/config.yml'
       - '--storage.path=/data'
     deploy:
-        mode: replicated
-        replicas: 2
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-        resources:
-          limits:
-            cpus: '0.50'
-            memory: 50M
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
     
   cadvisor:
     image: google/cadvisor
@@ -81,15 +81,15 @@ services:
       - "/sys:/sys:ro"
       - "/var/lib/docker/:/var/lib/docker:ro"
       - "/dev/disk/:/dev/disk:ro"
-      deploy:
-        mode: global
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-        resources:
-          limits:
-            memory: 128M
-          reservations:
-            memory: 64M
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
