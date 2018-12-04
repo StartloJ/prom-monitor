@@ -18,7 +18,9 @@ groups:
     annotations:
       summary: "High request latency on {{ $labels.instance }}"
       description: "{{ $labels.instance }} has a median request latency above 1s (current value: {{ $value }}s)"
-  
+
+- name: proc-alert
+  rules:
   # Alert for any process had blocked
   - alert: NodeProcBlocked
     expr: node_procs_blocked > 0

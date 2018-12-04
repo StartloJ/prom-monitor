@@ -2,9 +2,9 @@ version: '3.3'
 
 services:
   prometheus:
-    image: "prom/prometheus"
+    image: prom/prometheus
     volumes:
-      - "./prometheus/:/etc/prometheus/"
+      - './prometheus/:/etc/prometheus/'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -24,7 +24,7 @@ services:
   node-exporter:
     image: prom/node-exporter
     ports:
-      - '9100:9100'
+      - 9100:9100
     volumes:
       - '/proc:/host/proc'
       - '/sys:/host/sys'
@@ -53,14 +53,14 @@ services:
     ports: 
       - 9093:9093
     volumes:
-      - "./alertmanager/conf:/prometheus:ro"
-      - "./alertmanager/data:/data:rw"
+      - './alertmanager/conf/:/prometheus/'
+      - './alertmanager/data:/data'
     command:
       - '--config.file=/prometheus/config.yml'
       - '--storage.path=/data'
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 3
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -75,12 +75,12 @@ services:
     ports: 
       - 8080:8080
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/:/rootfs:ro"
-      - "/var/run:/var/run:ro"
-      - "/sys:/sys:ro"
-      - "/var/lib/docker/:/var/lib/docker:ro"
-      - "/dev/disk/:/dev/disk:ro"
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:rw'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+      - '/dev/disk/:/dev/disk:ro'
     deploy:
       mode: global
       restart_policy:

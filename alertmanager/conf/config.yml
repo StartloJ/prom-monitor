@@ -2,14 +2,14 @@ global:
   resolve_timeout: 5m
 
 route:
-  receiver: line-noti
+  receiver: 'line-noti'
   group_interval: 10s
   repeat_interval: 1m
 
 receivers:
-- name: line-noti
+- name: 'line-noti'
   webhook_configs:
-  - url: https://notify-api.line.me/api/notify
+  - url: 'https://notify-api.line.me/api/notify'
     send_resolved: true
     http_config:
-      bearer_token: vWQejwm95ogx75lFpTnCI3wGPNXeySs1OnrNPokANTM
+      bearer_token: 'vWQejwm95ogx75lFpTnCI3wGPNXeySs1OnrNPokANTM'
