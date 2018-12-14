@@ -19,63 +19,6 @@
   "links": [],
   "panels": [
     {
-      "alert": {
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                1
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          },
-          {
-            "evaluator": {
-              "params": [
-                1
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "or"
-            },
-            "query": {
-              "params": [
-                "B",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "frequency": "60s",
-        "handler": 1,
-        "message": "CPU overload",
-        "name": "CPU load alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {
         "idle": "#0A50A1"
       },
@@ -120,7 +63,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "sum by (instance,mode) (rate(wmi_cpu_time_total{mode!=\"idle\",instance=\"192.168.10.164:9182\"}[5m]))",
+          "expr": "sum by (instance,mode) (rate(wmi_cpu_time_total{mode!=\"idle\",group=\"test-node-windows\"}[5m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -142,25 +85,11 @@
           },
           "refId": "A",
           "step": 20
-        },
-        {
-          "expr": "sum by (instance,mode) (rate(wmi_cpu_time_total{mode!=\"idle\",instance=\"192.168.10.241:9182\"}[5m]))",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{instance}}[{{mode}}]",
-          "refId": "B"
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 1
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "CPU load",
       "tooltip": {
@@ -245,7 +174,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "wmi_system_threads{instance=\"192.168.10.164:9182\"}",
+          "expr": "wmi_system_threads{group=\"test-node-windows\"}",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -267,17 +196,11 @@
           },
           "refId": "A",
           "step": 20
-        },
-        {
-          "expr": "wmi_system_threads{instance=\"192.168.10.241:9182\"}",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
-          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "system_threads",
       "tooltip": {
@@ -362,7 +285,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "rate(wmi_system_exception_dispatches_total{instance=\"192.168.10.164:9182\"}[5m])",
+          "expr": "rate(wmi_system_exception_dispatches_total{group=\"test-node-windows\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -384,37 +307,11 @@
           },
           "refId": "A",
           "step": 20
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "rate(wmi_system_exception_dispatches_total{instance=\"192.168.10.241:9182\"}[5m])",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "{{instance}}",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "B",
-          "step": 20
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "System exception dispatches",
       "tooltip": {
@@ -454,63 +351,6 @@
       }
     },
     {
-      "alert": {
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                1073741824
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          },
-          {
-            "evaluator": {
-              "params": [
-                1073741824
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "or"
-            },
-            "query": {
-              "params": [
-                "C",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "frequency": "60s",
-        "handler": 1,
-        "message": "Memory leak",
-        "name": "Available Memory alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -553,7 +393,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "wmi_os_virtual_memory_free_bytes{instance=\"192.168.10.164:9182\"}",
+          "expr": "wmi_os_virtual_memory_free_bytes{group=\"test-node-windows\"}",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -575,45 +415,11 @@
           },
           "refId": "A",
           "step": 5
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "wmi_os_virtual_memory_free_bytes{instance=\"192.168.10.241:9182\"}",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Free memory:{{instance}}",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "C",
-          "step": 5
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": 1073741824
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Available Memory",
       "tooltip": {
@@ -661,7 +467,6 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": null,
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -713,7 +518,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(wmi_os_processes)",
+          "expr": "sum(wmi_os_processes{group=~\"test-node-windows\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -733,63 +538,6 @@
       "valueName": "current"
     },
     {
-      "alert": {
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                90
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          },
-          {
-            "evaluator": {
-              "params": [
-                90
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "or"
-            },
-            "query": {
-              "params": [
-                "B",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "frequency": "60s",
-        "handler": 1,
-        "message": "Service long time for process on host",
-        "name": "Time of service process alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {
         "Received mysqld-exporter:9104": "#0A50A1",
         "stopped": "#2F575E"
@@ -809,7 +557,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": false,
         "min": false,
         "rightSide": true,
@@ -834,7 +582,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "topk(15 , sum by (instance,mode,process) (irate(wmi_process_cpu_time_total{process!=\"Idle\",instance=\"192.168.10.164:9182\"}[5m])) * 100)",
+          "expr": "topk(15 , sum by (instance,mode,process) (irate(wmi_process_cpu_time_total{process!=\"Idle\",group=\"test-node-windows\"}[5m])) * 100)",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -854,43 +602,11 @@
           },
           "refId": "A",
           "step": 5
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "topk(15 , sum by (instance,mode,process) (irate(wmi_process_cpu_time_total{process!=\"Idle\",instance=\"192.168.10.241:9182\"}[5m])) * 100)",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "{{instance}}[{{process}}]",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "B",
-          "step": 5
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 90
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Time of service process",
       "tooltip": {
@@ -908,6 +624,7 @@
       },
       "yaxes": [
         {
+          "decimals": 2,
           "format": "percent",
           "label": "time to process(ms)",
           "logBase": 1,
@@ -972,7 +689,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "irate(wmi_logical_disk_write_bytes_total{instance=\"192.168.10.164:9182\", volume !~\"HarddiskVolume.+\"}[5m])",
+          "expr": "irate(wmi_logical_disk_write_bytes_total{group=\"test-node-windows\", volume !~\"HarddiskVolume.+\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -999,7 +716,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "- irate(wmi_logical_disk_read_bytes_total{instance=\"192.168.10.164:9182\", volume !~\"HarddiskVolume.+\"}[5m])",
+          "expr": "- irate(wmi_logical_disk_read_bytes_total{group=\"test-node-windows\", volume !~\"HarddiskVolume.+\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1021,65 +738,11 @@
           },
           "refId": "B",
           "step": 20
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "irate(wmi_logical_disk_write_bytes_total{instance=\"192.168.10.241:9182\", volume !~\"HarddiskVolume.+\"}[5m])",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Write {{instance}}[{{volume}}]",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "C",
-          "step": 20
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "- irate(wmi_logical_disk_read_bytes_total{instance=\"192.168.10.241:9182\", volume !~\"HarddiskVolume.+\"}[5m])",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "instant": false,
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Read {{instance}}[{{volume}}]",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "D",
-          "step": 20
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Hard drive load",
       "tooltip": {
@@ -1161,7 +824,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "rate(wmi_logical_disk_split_ios_total{instance=\"192.168.10.164:9182\", volume !~\"HarddiskVolume.+\"}[30s])",
+          "expr": "rate(wmi_logical_disk_split_ios_total{group=\"test-node-windows\", volume !~\"HarddiskVolume.+\"}[30s])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1183,37 +846,11 @@
           },
           "refId": "A",
           "step": 20
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "rate(wmi_logical_disk_split_ios_total{instance=\"192.168.10.241:9182\", volume !~\"HarddiskVolume.+\"}[30s])",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "i/o {{instance}}[{{volume}}]",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "B",
-          "step": 20
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Hard disk i/o ops total",
       "tooltip": {
@@ -1253,63 +890,6 @@
       }
     },
     {
-      "alert": {
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                5697673531
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          },
-          {
-            "evaluator": {
-              "params": [
-                5697673531
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "or"
-            },
-            "query": {
-              "params": [
-                "B",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "frequency": "60s",
-        "handler": 1,
-        "message": "Disk leak",
-        "name": "Hard disk free space alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -1352,7 +932,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "wmi_logical_disk_free_bytes{instance=\"192.168.10.164:9182\", volume !~\"HarddiskVolume.+\"}",
+          "expr": "wmi_logical_disk_free_bytes{group=\"test-node-windows\", volume !~\"HarddiskVolume.+\"}",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1374,46 +954,11 @@
           },
           "refId": "A",
           "step": 20
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "wmi_logical_disk_free_bytes{instance=\"192.168.10.241:9182\", volume !~\"HarddiskVolume.+\"}",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "interval": "",
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "free {{insatnce}}[{{volume}}]",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "B",
-          "step": 20
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": 5697673531
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Hard disk free space",
       "tooltip": {
@@ -1495,7 +1040,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "rate(wmi_net_bytes_sent_total{instance=\"192.168.10.164:9182\"}[5m]) >0",
+          "expr": "rate(wmi_net_bytes_sent_total{group=\"test-node-windows\"}[5m]) >0",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1509,7 +1054,7 @@
           "item": {
             "filter": ""
           },
-          "legendFormat": "Sent {{nic}}",
+          "legendFormat": "Sent {{instance}} {{nic}}",
           "metric": "mysql_global_status_questions",
           "mode": 0,
           "options": {
@@ -1522,7 +1067,7 @@
           "application": {
             "filter": ""
           },
-          "expr": "- rate(wmi_net_bytes_received_total{instance=\"192.168.10.164:9182\"}[5m]) <0",
+          "expr": "- rate(wmi_net_bytes_received_total{group=\"test-node-windows\"}[5m]) <0",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1536,7 +1081,7 @@
           "item": {
             "filter": ""
           },
-          "legendFormat": "Received {{nic}}",
+          "legendFormat": "Received {{instance}} {{nic}}",
           "metric": "mysql_global_status_questions",
           "mode": 0,
           "options": {
@@ -1544,64 +1089,11 @@
           },
           "refId": "A",
           "step": 10
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "rate(wmi_net_bytes_sent_total{instance=\"192.168.10.241:9182\"}[5m]) >0",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Sent {{nic}}",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "C",
-          "step": 10
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "- rate(wmi_net_bytes_received_total{instance=\"192.168.10.241:9182\"}[5m]) <0",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Received {{nic}}",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "D",
-          "step": 10
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Network",
       "tooltip": {
@@ -1686,5 +1178,5 @@
   "timezone": "browser",
   "title": "Demo1 - windows Datacenter",
   "uid": "5g05OcLik",
-  "version": 1
+  "version": 2
 }

@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     15s
-  evaluation_interval: 15s
+  scrape_interval:     10s
+  evaluation_interval: 10s
   external_labels:
     monitor: 'ptvn-prom'
 
@@ -24,18 +24,22 @@ remote_read:
 
 scrape_configs:
   - job_name: 'prometheus'
+    scrape_interval: 10s
+    scrape_timeout: 10s
     dns_sd_configs:
     - names:
-      - 'prometheus-cen'
+      - 'tasks.prometheus-cen'
       type: 'A'
       port: 9090
     static_configs:
       - targets: ['192.168.252.61:9090']
 
   - job_name: 'node-exporter'
+    scrape_interval: 10s
+    scrape_timeout: 10s
     dns_sd_configs:
     - names:
-      - 'node-exporter'
+      - 'tasks.node-exporter'
       type: 'A'
       port: 9100
     static_configs:
@@ -44,9 +48,11 @@ scrape_configs:
           group: 'test-node-linux'
   
   - job_name: 'wmi-exporter'
+    scrape_interval: 10s
+    scrape_timeout: 10s
     dns_sd_configs:
     - names:
-      - 'wmi-exporter'
+      - 'tasks.wmi-exporter'
       type: 'A'
       port: 9182
     static_configs:
@@ -55,19 +61,90 @@ scrape_configs:
           group: 'test-node-windows'
 
   - job_name: 'jmx-exporter'
+    scrape_interval: 10s
+    scrape_timeout: 10s
     dns_sd_configs:
     - names:
-      - 'jmx-exporter'
+      - 'tasks.jmx-exporter'
       type: 'A'
       port: 9117
     static_configs:
       - targets: ['192.168.10.241:9117']
         labels:
           group: 'test-jmx-exporter'
+  
+  - job_name: 'tomcat-exporter'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    dns_sd_configs:
+    - names:
+      - 'tasks.tomcat-exporter'
+      type: 'A'
+      port: 8080
+    static_configs:
+      - targets: ['192.168.19.39:8080']
+        labels:
+          group: 'test-tomcat-exporter'
 
   - job_name: 'cadvisor'
-    scrape_interval: 5s
+    scrape_interval: 10s
+    scrape_timeout: 10s
     static_configs:
       - targets: ['192.168.252.61:8080','192.168.10.219:9090']
         labels:
           group: 'test-container-exporter'
+  
+  - job_name: 'blackbox-web'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://www.pantavanij.com
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=1
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=24
+        - https://ep.pantavanij.com/true
+        - https://www.opoversea.com/eps/Login/75
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=2
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=5
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=7
+        - https://cpallep.pantavanij.com
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=14
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=48
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=52
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=59
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=68
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=72
+        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=73
+        - https://tmgep.pantavanij.com
+        - https://kbankep.pantavanij.com
+        - http://auction.pantavanij.com
+        - http://auction2.pantavanij.com
+        - http://auction3.pantavanij.com
+        - http://auction5.pantavanij.com
+        - http://auction9.pantavanij.com
+        - http://on-site.pantavanij.com
+        - http://azcp.car.pantavanij.com/OALC/firstpage.action
+        - http://auction10.pantavanij.com
+        - http://auction11.pantavanij.com
+        - http://tip.car.pantavanij.com
+        - http://tnn.car.pantavanij.com
+        - http://erfxonline.pantavanij.com
+        - https://www.goodchoiz.com
+        - https://www.makroclick.com/th
+        - https://www.makro.co.th/login
+        - http://192.168.252.34
+        - https://trueordering.pantavanij.com
+        - http://192.168.19.39:8080
+        - https://www.supplierwebwork.com
+        labels:
+          group: 'test-web-monitor'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.252.61:9115

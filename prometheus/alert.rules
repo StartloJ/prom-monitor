@@ -1,23 +1,97 @@
 groups:
-- name: system-alert
+- name: default-system-alert
   rules:
   # Alert for any instance that is unreachable for >5 minutes.
   - alert: InstanceDown
     expr: up == 0
     for: 5m
     labels:
-      severity: page
+      severity: critical
     annotations:
       summary: "Instance {{ $labels.instance }} down"
       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
 
-  # Alert for any instance that has a median request latency >1s.
-  - alert: APIHighRequestLatency
-    expr: api_http_request_latencies_second{quantile="0.5"} > 1
-    for: 10m
+- name: wmi-system-alert
+  rules:
+  # Alert cpu overload more than 3 cores.
+  - alert: WmiCPUOverloadHigh
+    expr: (sum by (instance,mode) (rate(wmi_cpu_time_total{mode!="idle"}[5m]))) > 3
+    for: 1m
+    labels:
+      severity: major
     annotations:
-      summary: "High request latency on {{ $labels.instance }}"
-      description: "{{ $labels.instance }} has a median request latency above 1s (current value: {{ $value }}s)"
+      summary: "CPU overload is too high on {{$labels.instance}}"
+      description: "Many content in wait state for process on CPUs"
+
+  # Alert for lack of system memory free than 20%
+  - alert: WmiLowAvailableMemory
+    expr: ((wmi_os_virtual_memory_free_bytes / wmi_os_virtual_memory_bytes) * 100) < 20
+    for: 5m
+    labels:
+      severity: minor
+    annotations:
+      summary: "Lack of memory free on {{$labels.instance}}"
+      description: "Memory free is lower than 20% on {{$labels.instance}}"
+  
+  # Alert for lack of disk space than 20%
+  - alert: WmiLowAvailableDisk
+    expr: ((wmi_logical_disk_free_bytes{volume !~"HarddiskVolume.+"} / wmi_logical_disk_size_bytes{volume !~"HarddiskVolume.+"}) * 100) <= 20
+    for: 30m
+    labels:
+      severity: minor
+    annotations:
+      summary: "Low of free disk in {{$labels.volume}} on {{$labels.instance}}"
+      description: "Disk free is less than 20%"
+
+- name: linux-system-alert
+  rules:
+  # Alert for cpu usage greater than 90%
+  - alert: HighCpuUsage1Min
+    expr: ((1 - avg without (mode,cpu) (rate(node_cpu_seconds_total{group="test-node-linux",mode="idle"}[5m]))) * 100) >= 90
+    for: 1m
+    labels:
+      severity: minor
+    annotations:
+      summary: "High CPU usage on {{$labels.instance}} in 1 minutes"
+      description: "CPU workload is higher up to 90% on {{$labels.instance}}"
+  - alert: HighCpuUsage5Min
+    expr: ((1 - avg without (mode,cpu) (rate(node_cpu_seconds_total{group="test-node-linux",mode="idle"}[5m]))) * 100) >= 90
+    for: 5m
+    labels:
+      severity: major
+    annotations:
+      summary: "High CPU usage on {{$labels.instance}} in 5 minutes"
+      description: "CPU workload is higher up to 90% on {{$labels.instance}}"
+
+  # Alert cpu overload more than 3 cores.
+  - alert: NodeCPUOverloadHigh
+    expr: node_load5 > 3
+    for: 1m
+    labels:
+      severity: major
+    annotations:
+      summary: "CPU overload is too high on {{$labels.instance}}"
+      description: "Many content in wait state for process on CPUs"
+
+  # Alert for lack of system memory free than 20%
+  - alert: NodeLowAvailableMemory
+    expr: ((node_memory_MemAvailable_bytes{group="test-node-linux"} / node_memory_MemTotal_bytes{group="test-node-linux"}) * 100) < 20
+    for: 5m
+    labels:
+      severity: minor
+    annotations:
+      summary: "Lack of memory free on {{$labels.instance}}"
+      description: "Memory free is lower than 20% on {{$labels.instance}}"
+  
+  # Alert for lack of disk space than 20%
+  - alert: NodeLowAvailableDisk
+    expr: ((node_filesystem_free_bytes / node_filesystem_size_bytes) * 100) <= 20
+    for: 30m
+    labels:
+      severity: minor
+    annotations:
+      summary: "Low of free disk in {{$labels.mountpoint}} on {{$labels.instance}}"
+      description: "Disk free is less than 20%"
 
 - name: proc-alert
   rules:
@@ -28,5 +102,29 @@ groups:
     labels:
       severity: warning
     annotations:
-      summary: "Some proc has blocked on {{$labels.instance}}"
-      description: "Some process on {{$labels.instance}} has blocked."
+      summary: "Process on {{$labels.instance}} not running"
+      description: "Some process on {{$labels.instance}} has blocked state."
+
+- name: http-fail
+  rules:
+  # Alert on http/https request is not success on http 2xx status.
+  - alert: ProbeFailing
+    expr: probe_success{job="blackbox-web"} < 1
+    for: 5m
+    labels:
+      severity: major
+    annotations:
+      summary: "HTTP/s to {{$labels.instance}} has failure."
+      description: "Exporter cann't receive http 2xx response from Server:{{$labels.instance}}."
+
+- name: ssl-expiry
+  rules:
+  # Alert for ssl cert is coming expire less than 30 days
+  - alert: SSLCertExpiringSoon 
+    expr: probe_ssl_earliest_cert_expiry{job="blackbox-web"} - time() < 86400 * 30 
+    for: 1d
+    labels:
+      severity: minor
+    annotations:
+      summary: "SSL certificate near expired on {{$labels.instance}} ."
+      description: "SSL certificate alive less than 30 days on {{$labels.instance}}"

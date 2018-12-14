@@ -3,6 +3,7 @@ version: '3.3'
 services:
   prometheus:
     image: prom/prometheus
+    network_mode: "host"
     volumes:
       - './prometheus/:/etc/prometheus/'
     command:
@@ -23,6 +24,7 @@ services:
 
   node-exporter:
     image: prom/node-exporter
+    network_mode: "host"
     ports:
       - 9100:9100
     volumes:
@@ -50,6 +52,7 @@ services:
   
   alertmanager:
     image: prom/alertmanager
+    network_mode: "host"
     ports: 
       - 9093:9093
     volumes:
@@ -72,6 +75,7 @@ services:
     
   cadvisor:
     image: google/cadvisor
+    network_mode: "host"
     ports: 
       - 8080:8080
     volumes:
@@ -93,3 +97,34 @@ services:
           memory: 128M
         reservations:
           memory: 64M
+  
+  blackbox_exporter:
+    image: prom/blackbox-exporter
+    network_mode: "host"
+    ports:
+      - 9115:9115
+    dns:
+      - 192.168.2.5
+      - 192.168.2.10
+    restart: always
+    volumes:
+      - './blackbox-exporter:/config'
+    command: 
+      - '--config.file=/config/blackbox.yml'
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+# networks:
+#   outside:
+#     external:
+#       name: "host"
