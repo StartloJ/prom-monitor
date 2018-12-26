@@ -18,3 +18,12 @@ datasources:
     user: 'admin'
     password: 'password'
     version: 1
+
+  - access: 'proxy'
+    editable: true
+    is_default: true
+    name: 'Prometheus'
+    org_id: 2
+    type: 'prometheus' 
+    url: 'http://192.168.252.61:9090'
+    version: 1

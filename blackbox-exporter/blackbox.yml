@@ -11,3 +11,13 @@ modules:
     timeout: 5s
     http:
       method: POST
+  
+  icmp:
+    prober: icmp
+    preferred_ip_protocol: "ip4"
+  
+  ssh_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - expect: "^SSH-2.0-"

@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     10s
-  evaluation_interval: 10s
+  scrape_interval:     30s
+  evaluation_interval: 1m
   external_labels:
     monitor: 'ptvn-prom'
 
@@ -46,7 +46,36 @@ scrape_configs:
       - targets: ['192.168.252.61:9100','192.168.10.219:9100','192.168.10.196:9100']
         labels:
           group: 'test-node-linux'
+          projects: 'Demo2'
   
+  - job_name: 'node-gz'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    dns_sd_configs:
+    - names:
+      - 'tasks.node-gz'
+      type: 'A'
+      port: 9100
+    static_configs:
+      - targets: ['192.168.5.121:9100','192.168.10.74:9100']
+        labels:
+          group: 'gz-node-linux'
+          projects: 'Goodchoize'
+  
+  - job_name: 'node-op-uat'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    dns_sd_configs:
+    - names:
+      - 'tasks.node-op-uat'
+      type: 'A'
+      port: 9100
+    static_configs:
+      - targets: ['192.168.135.19:9100','192.168.135.54:9100']
+        labels:
+          group: 'opuat-node-linux'
+          projects: 'Oneplanet'
+
   - job_name: 'wmi-exporter'
     scrape_interval: 10s
     scrape_timeout: 10s
@@ -59,6 +88,38 @@ scrape_configs:
       - targets: ['192.168.10.164:9182','192.168.10.241:9182']
         labels:
           group: 'test-node-windows'
+          projects: 'Demo1'
+  
+  - job_name: 'wmi-gz'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    dns_sd_configs:
+    - names:
+      - 'tasks.wmi-gz'
+      type: 'A'
+      port: 9182
+    static_configs:
+      - targets:
+          - '192.168.5.107:9182'
+          - '192.168.5.109:9182'
+          - '192.168.5.122:9182'
+          - '192.168.5.117:9182'
+          - '192.168.5.119:9182'
+          - '192.168.5.209:9182'
+          - '192.168.5.233:9182'
+          - '192.168.10.237:9182'
+          - '192.168.10.236:9182'
+          - '192.168.10.245:9182'
+          - '192.168.10.247:9182'
+          - '192.168.10.230:9182'
+          - '192.168.10.239:9182'
+          - '192.168.10.139:9182'
+          - '192.168.7.23:9182'
+          - '192.168.2.14:9182'
+          - '192.168.2.11:9182'
+        labels:
+          group: 'gz-node-windows'
+          projects: 'Goodchoize'
 
   - job_name: 'jmx-exporter'
     scrape_interval: 10s
@@ -72,6 +133,7 @@ scrape_configs:
       - targets: ['192.168.10.241:9117']
         labels:
           group: 'test-jmx-exporter'
+          projects: 'Demo1'
   
   - job_name: 'tomcat-exporter'
     scrape_interval: 10s
@@ -85,6 +147,7 @@ scrape_configs:
       - targets: ['192.168.19.39:8080']
         labels:
           group: 'test-tomcat-exporter'
+          projects: 'Demo2'
 
   - job_name: 'cadvisor'
     scrape_interval: 10s
@@ -93,6 +156,7 @@ scrape_configs:
       - targets: ['192.168.252.61:8080','192.168.10.219:9090']
         labels:
           group: 'test-container-exporter'
+          projects: 'Demo2'
   
   - job_name: 'blackbox-web'
     scrape_interval: 10s
@@ -139,8 +203,10 @@ scrape_configs:
         - https://trueordering.pantavanij.com
         - http://192.168.19.39:8080
         - https://www.supplierwebwork.com
+        - https://cpallep.pantavanij.com
         labels:
           group: 'test-web-monitor'
+          projects: 'Demo4'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
