@@ -3,7 +3,6 @@ version: '3.3'
 services:
   grafana:
     image: grafana/grafana
-    network_mode: "host"
     volumes:
       - "./grafana/provisioning/:/etc/grafana/provisioning/"
       - "./grafana/plugin/:/var/lib/grafana/plugins/"
@@ -25,7 +24,6 @@ services:
   
   unsee:
     image: cloudflare/unsee:v0.8.0
-    network_mode: "host"
     ports:
       - 9094:8080
     environment:

@@ -13,8 +13,6 @@ alerting:
 
 rule_files:
   - "alert.rules"
-  # - "first.rules"
-  # - "second.rules"
 
 remote_write:
   - url: "http://192.168.252.64:8086/api/v1/prom/write?u=prome&p=prometheus&db=promedb"
@@ -120,20 +118,6 @@ scrape_configs:
         labels:
           group: 'gz-node-windows'
           projects: 'Goodchoize'
-
-  - job_name: 'jmx-exporter'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.jmx-exporter'
-      type: 'A'
-      port: 9117
-    static_configs:
-      - targets: ['192.168.10.241:9117']
-        labels:
-          group: 'test-jmx-exporter'
-          projects: 'Demo1'
   
   - job_name: 'tomcat-exporter'
     scrape_interval: 10s
