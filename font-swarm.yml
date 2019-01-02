@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:5.4.2
     volumes:
       - "./grafana/provisioning/:/etc/grafana/provisioning/"
       - "./grafana/plugin/:/var/lib/grafana/plugins/"
