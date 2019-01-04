@@ -45,37 +45,45 @@ groups:
 
 - name: linux-system-alert
   rules:
-  # Alert for cpu usage greater than 90%
+  # Alert for cpu usage greater than 60%
   - alert: HighCpuUsage1Min
-    expr: ((1 - avg without (mode,cpu) (rate(node_cpu_seconds_total{group="test-node-linux",mode="idle"}[5m]))) * 100) >= 90
+    expr: avg(node_load1) /  count(count(node_cpu_seconds_total) by (cpu)) * 100 >= 60
     for: 1m
     labels:
       severity: minor
     annotations:
       summary: "High CPU usage on {{$labels.instance}} in 1 minutes"
-      description: "CPU workload is higher up to 90% on {{$labels.instance}}"
+      description: "CPU workload is higher up to 60% on {{$labels.instance}}"
   - alert: HighCpuUsage5Min
-    expr: ((1 - avg without (mode,cpu) (rate(node_cpu_seconds_total{group="test-node-linux",mode="idle"}[5m]))) * 100) >= 90
+    expr: avg(node_load5) /  count(count(node_cpu_seconds_total) by (cpu)) * 100 >= 60
     for: 5m
     labels:
       severity: major
     annotations:
       summary: "High CPU usage on {{$labels.instance}} in 5 minutes"
-      description: "CPU workload is higher up to 90% on {{$labels.instance}}"
+      description: "CPU workload is higher up to 60% on {{$labels.instance}}"
 
-  # Alert cpu overload more than 3 cores.
-  - alert: NodeCPUOverloadHigh
-    expr: node_load5 > 3
+  # Alert for cpu usage greater than 90%
+  - alert: HighCpuUsage1Min
+    expr: avg(node_load1) /  count(count(node_cpu_seconds_total) by (cpu)) * 100 >= 90
     for: 1m
     labels:
-      severity: major
+      severity: critical
     annotations:
-      summary: "CPU overload is too high on {{$labels.instance}}"
-      description: "Many content in wait state for process on CPUs"
+      summary: "High CPU usage on {{$labels.instance}} in 1 minutes"
+      description: "CPU workload is higher up to 90% on {{$labels.instance}}"
+  - alert: HighCpuUsage5Min
+    expr: avg(node_load5) /  count(count(node_cpu_seconds_total) by (cpu)) * 100 >= 90
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High CPU usage on {{$labels.instance}} in 5 minutes"
+      description: "CPU workload is higher up to 90% on {{$labels.instance}}"
 
   # Alert for lack of system memory free than 20%
   - alert: NodeLowAvailableMemory
-    expr: ((node_memory_MemAvailable_bytes{group="test-node-linux"} / node_memory_MemTotal_bytes{group="test-node-linux"}) * 100) < 20
+    expr: ((node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100) < 20
     for: 5m
     labels:
       severity: minor
@@ -85,12 +93,12 @@ groups:
   
   # Alert for lack of disk space than 20%
   - alert: NodeLowAvailableDisk
-    expr: ((node_filesystem_free_bytes / node_filesystem_size_bytes) * 100) <= 20
+    expr: 100 - ((node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes) <= 20
     for: 30m
     labels:
       severity: minor
     annotations:
-      summary: "Low of free disk in {{$labels.mountpoint}} on {{$labels.instance}}"
+      summary: "Low of free disk in mountpoint {{$labels.mountpoint}} on {{$labels.instance}}"
       description: "Disk free is less than 20%"
 
 - name: proc-alert
@@ -109,7 +117,7 @@ groups:
   rules:
   # Alert on http/https request is not success on http 2xx status.
   - alert: ProbeFailing
-    expr: probe_success{job="blackbox-web"} < 1
+    expr: probe_success < 1
     for: 5m
     labels:
       severity: major
@@ -121,7 +129,7 @@ groups:
   rules:
   # Alert for ssl cert is coming expire less than 30 days
   - alert: SSLCertExpiringSoon 
-    expr: probe_ssl_earliest_cert_expiry{job="blackbox-web"} - time() < 86400 * 30 
+    expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30 
     for: 1d
     labels:
       severity: minor

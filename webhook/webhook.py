@@ -11,6 +11,7 @@ def temp_token():
 
 logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 rootLogger = logging.getLogger()
+rootLogger.setLevel(logging.DEBUG)
 
 consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(logFormatter)
@@ -74,4 +75,4 @@ if __name__ == '__main__':
         token = temp_token()
         print('Token: %s' % token)
         WEBHOOK_VERIFY_TOKEN = token
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0') #default allow on port 5000.

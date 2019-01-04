@@ -4,9 +4,9 @@ global:
 route:
   group_by: ['alertname', 'job', 'projects', 'group', 'instance']
   receiver: 'line-noti'
-  group_interval: 30m
+  group_interval: 30s
   group_wait: 45s
-  repeat_interval: 1h
+  repeat_interval: 3h
 
 receivers:
 - name: 'line-noti'

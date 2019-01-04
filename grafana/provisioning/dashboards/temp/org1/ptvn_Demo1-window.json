@@ -19,6 +19,165 @@
   "links": [],
   "panels": [
     {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "description": "Total host available in current times.",
+      "format": "percent",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 19,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "100 * (count(up{projects=\"Demo1\"} == 1) / count(up{projects=\"Demo1\"}))",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "50,99",
+      "title": "Host Alive",
+      "type": "singlestat",
+      "valueFontSize": "100%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 21,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "count(up{projects=\"Demo1\"} == 0)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "title": "Host down!!",
+      "type": "singlestat",
+      "valueFontSize": "100%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
       "aliasColors": {
         "idle": "#0A50A1"
       },
@@ -31,7 +190,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 6
       },
       "hideTimeOverride": false,
       "id": 4,
@@ -140,7 +299,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 6
+        "y": 12
       },
       "hideTimeOverride": false,
       "id": 12,
@@ -252,7 +411,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 6
+        "y": 12
       },
       "hideTimeOverride": false,
       "id": 13,
@@ -361,7 +520,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 19
       },
       "hideTimeOverride": false,
       "id": 14,
@@ -479,7 +638,7 @@
         "h": 7,
         "w": 5,
         "x": 0,
-        "y": 19
+        "y": 25
       },
       "id": 17,
       "interval": null,
@@ -551,7 +710,7 @@
         "h": 7,
         "w": 19,
         "x": 5,
-        "y": 19
+        "y": 25
       },
       "id": 7,
       "legend": {
@@ -657,7 +816,7 @@
         "h": 5,
         "w": 8,
         "x": 0,
-        "y": 26
+        "y": 32
       },
       "hideTimeOverride": false,
       "id": 8,
@@ -792,7 +951,7 @@
         "h": 5,
         "w": 8,
         "x": 8,
-        "y": 26
+        "y": 32
       },
       "hideTimeOverride": false,
       "id": 9,
@@ -900,7 +1059,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 26
+        "y": 32
       },
       "hideTimeOverride": false,
       "id": 15,
@@ -1008,7 +1167,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 37
       },
       "hideTimeOverride": false,
       "id": 11,
@@ -1178,5 +1337,5 @@
   "timezone": "browser",
   "title": "Demo1 - windows Datacenter",
   "uid": "5g05OcLik",
-  "version": 2
+  "version": 1
 }
