@@ -8,6 +8,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--storage.tsdb.retention=5m'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
       - 9090:9090
@@ -116,6 +117,18 @@ services:
           memory: 128M
         reservations:
           memory: 64M
+  
+  remotestorageadapter:
+    image: gavind/prometheus-remote-storage-adapter:1.0
+    ports:
+      - 9201:9201
+    environment:
+      - INFLUXDB_PW=prometheus
+    command:
+      - '-influxdb-url=http://192.168.252.64:8086'
+      - '-influxdb.database=promedb'
+      - '-influxdb.retention-policy=autogen'
+      - '-influxdb.username=prome'
 
 # networks:
 #   outside:

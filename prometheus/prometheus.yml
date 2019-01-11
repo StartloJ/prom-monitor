@@ -15,10 +15,10 @@ rule_files:
   - "alert.rules"
 
 remote_write:
-  - url: "http://192.168.252.64:8086/api/v1/prom/write?u=prome&p=prometheus&db=promedb"
+  - url: "http://192.168.252.61:9201/write"
 
 remote_read:
-  - url: "http://192.168.252.64:8086/api/v1/prom/read?u=prome&p=prometheus&db=promedb"
+  - url: "http://192.168.252.61:9201/read"
 
 scrape_configs:
   - job_name: 'prometheus'
@@ -35,25 +35,24 @@ scrape_configs:
   - job_name: 'node-exporter'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.node-exporter'
-      type: 'A'
-      port: 9100
     static_configs:
-      - targets: ['192.168.252.61:9100','192.168.10.219:9100','192.168.10.196:9100']
+      - targets: ['192.168.252.61:9100','192.168.10.219:9100','192.168.10.196:9100','192.168.252.64:9100']
         labels:
           group: 'test-node-linux'
           projects: 'Demo2'
   
+  - job_name: 'influx-exporter'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    static_configs:
+      - targets: ['192.168.252.64:9100']
+        labels:
+          group: 'influxdb-linux'
+          projects: 'Demo2'
+
   - job_name: 'node-gz'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.node-gz'
-      type: 'A'
-      port: 9100
     static_configs:
       - targets: ['192.168.5.121:9100','192.168.10.74:9100']
         labels:
@@ -63,11 +62,6 @@ scrape_configs:
   - job_name: 'node-op-uat'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.node-op-uat'
-      type: 'A'
-      port: 9100
     static_configs:
       - targets: ['192.168.135.19:9100','192.168.135.54:9100']
         labels:
@@ -77,11 +71,6 @@ scrape_configs:
   - job_name: 'wmi-exporter'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.wmi-exporter'
-      type: 'A'
-      port: 9182
     static_configs:
       - targets: ['192.168.10.164:9182','192.168.10.241:9182']
         labels:
@@ -91,11 +80,6 @@ scrape_configs:
   - job_name: 'wmi-gz'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.wmi-gz'
-      type: 'A'
-      port: 9182
     static_configs:
       - targets:
           - '192.168.5.107:9182'
