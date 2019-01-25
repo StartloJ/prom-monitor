@@ -24,11 +24,6 @@ scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.prometheus-cen'
-      type: 'A'
-      port: 9090
     static_configs:
       - targets: ['192.168.252.61:9090']
 
@@ -36,7 +31,12 @@ scrape_configs:
     scrape_interval: 10s
     scrape_timeout: 10s
     static_configs:
-      - targets: ['192.168.252.61:9100','192.168.10.219:9100','192.168.10.196:9100','192.168.252.64:9100']
+      - targets: 
+        - '192.168.252.61:9100'
+        - '192.168.252.62:9100'
+        - '192.168.252.63:9100'
+        - '192.168.10.219:9100'
+        - '192.168.10.196:9100'
         labels:
           group: 'test-node-linux'
           projects: 'Demo2'
@@ -49,6 +49,15 @@ scrape_configs:
         labels:
           group: 'influxdb-linux'
           projects: 'Demo2'
+  
+  - job_name: 'wmi-mb2c'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    static_configs:
+      - targets: ['192.168.122.9:9182']
+        labels:
+          group: 'mb2c-DNS-windows'
+          projects: 'MackroB2C'
 
   - job_name: 'node-gz'
     scrape_interval: 10s
@@ -72,33 +81,41 @@ scrape_configs:
     scrape_interval: 10s
     scrape_timeout: 10s
     static_configs:
-      - targets: ['192.168.10.164:9182','192.168.10.241:9182']
+      - targets: 
+        - '192.168.10.164:9182'
         labels:
           group: 'test-node-windows'
           projects: 'Demo1'
-  
+          hostname: 'kittyCat'
+      - targets:
+        - '192.168.10.241:9182'
+        labels:
+          group: 'test-node-windows'
+          projects: 'Demo1'
+          hostname: 'MigthyDog'
+
   - job_name: 'wmi-gz'
     scrape_interval: 10s
     scrape_timeout: 10s
     static_configs:
       - targets:
-          - '192.168.5.107:9182'
-          - '192.168.5.109:9182'
-          - '192.168.5.122:9182'
-          - '192.168.5.117:9182'
-          - '192.168.5.119:9182'
-          - '192.168.5.209:9182'
-          - '192.168.5.233:9182'
-          - '192.168.10.237:9182'
-          - '192.168.10.236:9182'
-          - '192.168.10.245:9182'
-          - '192.168.10.247:9182'
-          - '192.168.10.230:9182'
-          - '192.168.10.239:9182'
-          - '192.168.10.139:9182'
-          - '192.168.7.23:9182'
-          - '192.168.2.14:9182'
-          - '192.168.2.11:9182'
+        - '192.168.5.107:9182'
+        - '192.168.5.109:9182'
+        - '192.168.5.122:9182'
+        - '192.168.5.117:9182'
+        - '192.168.5.119:9182'
+        - '192.168.5.209:9182'
+        - '192.168.5.233:9182'
+        - '192.168.10.237:9182'
+        - '192.168.10.236:9182'
+        - '192.168.10.245:9182'
+        - '192.168.10.247:9182'
+        - '192.168.10.230:9182'
+        - '192.168.10.239:9182'
+        - '192.168.10.139:9182'
+        - '192.168.7.23:9182'
+        - '192.168.2.14:9182'
+        - '192.168.2.11:9182'
         labels:
           group: 'gz-node-windows'
           projects: 'Goodchoize'
@@ -106,11 +123,6 @@ scrape_configs:
   - job_name: 'tomcat-exporter'
     scrape_interval: 10s
     scrape_timeout: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.tomcat-exporter'
-      type: 'A'
-      port: 8080
     static_configs:
       - targets: ['192.168.19.39:8080']
         labels:
@@ -152,15 +164,15 @@ scrape_configs:
         - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=73
         - https://tmgep.pantavanij.com
         - https://kbankep.pantavanij.com
-        - http://auction.pantavanij.com
-        - http://auction2.pantavanij.com
-        - http://auction3.pantavanij.com
-        - http://auction5.pantavanij.com
-        - http://auction9.pantavanij.com
-        - http://on-site.pantavanij.com
+        - https://auction.pantavanij.com
+        - https://auction2.pantavanij.com
+        - https://auction3.pantavanij.com
+        - https://auction5.pantavanij.com
+        - https://auction9.pantavanij.com
+        - https://on-site.pantavanij.com
         - http://azcp.car.pantavanij.com/OALC/firstpage.action
-        - http://auction10.pantavanij.com
-        - http://auction11.pantavanij.com
+        - https://auction10.pantavanij.com
+        - https://auction11.pantavanij.com
         - http://tip.car.pantavanij.com
         - http://tnn.car.pantavanij.com
         - http://erfxonline.pantavanij.com

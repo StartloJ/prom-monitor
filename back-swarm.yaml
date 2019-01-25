@@ -8,7 +8,6 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--storage.tsdb.retention=5m'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
       - 9090:9090
@@ -129,7 +128,10 @@ services:
       - '-influxdb.database=promedb'
       - '-influxdb.retention-policy=autogen'
       - '-influxdb.username=prome'
-
+  noti-webhook:
+    image: dukecyber/pwebhook:v1.0.0
+    ports:
+      - 5000:5000
 # networks:
 #   outside:
 #     external:
