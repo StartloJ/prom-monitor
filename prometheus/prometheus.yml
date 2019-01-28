@@ -13,6 +13,7 @@ alerting:
 
 rule_files:
   - "alert.rules"
+  - "alwindows.rules"
 
 remote_write:
   - url: "http://192.168.252.61:9201/write"

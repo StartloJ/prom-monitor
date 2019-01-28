@@ -11,38 +11,6 @@ groups:
       summary: "Instance {{ $labels.instance }} down"
       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
 
-- name: wmi-system-alert
-  rules:
-  # Alert cpu overload more than 3 cores.
-  - alert: WmiCPUOverloadHigh
-    expr: (sum by (instance,mode) (rate(wmi_cpu_time_total{mode!="idle"}[5m]))) > 3
-    for: 1m
-    labels:
-      severity: major
-    annotations:
-      summary: "CPU overload is too high on {{$labels.instance}}"
-      description: "Many content in wait state for process on CPUs"
-
-  # Alert for lack of system memory free than 20%
-  - alert: WmiLowAvailableMemory
-    expr: ((wmi_os_virtual_memory_free_bytes / wmi_os_virtual_memory_bytes) * 100) < 20
-    for: 5m
-    labels:
-      severity: minor
-    annotations:
-      summary: "Lack of memory free on {{$labels.instance}}"
-      description: "Memory free is lower than 20% on {{$labels.instance}}"
-  
-  # Alert for lack of disk space than 20%
-  - alert: WmiLowAvailableDisk
-    expr: ((wmi_logical_disk_free_bytes{volume !~"HarddiskVolume.+"} / wmi_logical_disk_size_bytes{volume !~"HarddiskVolume.+"}) * 100) <= 20
-    for: 30m
-    labels:
-      severity: minor
-    annotations:
-      summary: "Low of free disk in {{$labels.volume}} on {{$labels.instance}}"
-      description: "Disk free is less than 20%"
-
 - name: linux-system-alert
   rules:
   # Alert for cpu usage greater than 60%
