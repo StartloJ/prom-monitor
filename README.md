@@ -1,1 +1,1 @@
-# prom-ptvn
+# Demo Prometheus projects
