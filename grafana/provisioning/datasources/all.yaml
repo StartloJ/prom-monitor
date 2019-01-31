@@ -5,7 +5,7 @@ datasources:
     name: 'Prometheus'
     org_id: 1
     type: 'prometheus' 
-    url: 'http://192.168.252.61:9090'
+    url: 'http://localhost:9090'
     version: 1
 
   - editable: true
@@ -13,17 +13,8 @@ datasources:
     name: 'external-db'
     org_id: 1
     type: 'influxdb'
-    url: 'http://192.168.252.64:8086'
+    url: 'http://localhost:8086'
     database: '_internal'
     user: 'admin'
     password: 'password'
-    version: 1
-
-  - access: 'proxy'
-    editable: true
-    is_default: true
-    name: 'Prometheus'
-    org_id: 2
-    type: 'prometheus' 
-    url: 'http://192.168.252.61:9090'
     version: 1

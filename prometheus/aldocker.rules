@@ -1,0 +1,23 @@
+groups:
+- name: cAdvisor-docker-alert
+  rules:
+  # Alert for docker container isn't response.
+  - alert: ContainerPSDown
+    expr: sum(rate(container_cpu_user_seconds_total{image!=""}[5m]) * 100) by (instance , name) <= 0
+    for: 15m
+    labels:
+      severity: major
+    annotations:
+      summary: "Container is down with {{$labels.name}}"
+      description: "Docker container in host {{$labels.instance}} is gone to down or not response."
+
+  rules:
+  # Alert for docker container high CPUs Usage.
+  - alert: ContainerCPUoverload
+    expr: sum(rate(container_cpu_user_seconds_total{image!=""}[5m]) * 100) by (instance , name) >= 90
+    for: 5m
+    labels:
+      severity: major
+    annotations:
+      summary: "CPU overload is too high on {{$labels.name}}"
+      description: "{{$labels.name}} is high usage CPUs on {{$labels.instance}} host."

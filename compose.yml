@@ -97,7 +97,7 @@ services:
       - "./grafana/plugin/:/var/lib/grafana/plugins/"
       - "./grafana/custom.ini:/etc/grafana/custom.ini"
     ports:
-      - "192.168.252.61:3000:3000"
+      - "3000:3000"
     healthcheck:
       test: ["CMD-SHELL", "curl -f localhost:3000/api/health && echo 'ready'"]
       interval: 10s

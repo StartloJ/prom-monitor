@@ -1,0 +1,1 @@
+java -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=9116 -jar jmx_prometheus_javaagent-0.3.1.jar 9117 tomcat_conf.yml

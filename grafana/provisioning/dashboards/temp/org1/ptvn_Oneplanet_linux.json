@@ -12,20 +12,101 @@
       }
     ]
   },
-  "description": "Nearly all default values exported by Prometheus node exporter graphed.",
+  "description": "Nearly all default values exported by Prometheus node exporter graphed and display only about projects of Oneplanet",
   "editable": true,
   "gnetId": 1860,
   "graphTooltip": 0,
-  "iteration": 1546426224848,
+  "iteration": 1548824154291,
   "links": [],
   "panels": [
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 281,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "hostname",
+      "targets": [
+        {
+          "expr": "up{projects=\"$projects\", instance=~\"$node.*\"}",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "title": "Hostname",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "100%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 3
       },
       "id": 261,
       "panels": [],
@@ -57,7 +138,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 4
       },
       "id": 20,
       "interval": null,
@@ -97,7 +178,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "(((count(count(node_cpu_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}) by (cpu))",
+          "expr": "(((count(count(node_cpu_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',projects=\"$projects\", instance=~\"$node.*\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}) by (cpu))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -143,7 +224,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 1
+        "y": 4
       },
       "hideTimeOverride": false,
       "id": 16,
@@ -184,7 +265,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "((node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_MemFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}) / (node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} )) * 100",
+          "expr": "((node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"}) / (node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"} )) * 100",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -192,7 +273,7 @@
           "step": 900
         },
         {
-          "expr": "100 - ((node_memory_MemAvailable_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} * 100) / node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"})",
+          "expr": "100 - ((node_memory_MemAvailable_bytes{projects=\"$projects\", instance=~\"$node.*\"} * 100) / node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -231,7 +312,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 1
+        "y": 4
       },
       "id": 21,
       "interval": null,
@@ -271,7 +352,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "((node_memory_SwapTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_SwapFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}) / (node_memory_SwapTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} )) * 100",
+          "expr": "((node_memory_SwapTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"}) / (node_memory_SwapTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"} )) * 100",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -296,13 +377,13 @@
       "colorBackground": false,
       "colorValue": true,
       "colors": [
-        "rgba(245, 54, 54, 0.9)",
+        "rgba(50, 172, 45, 0.97)",
         "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
+        "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": "Prometheus",
       "decimals": null,
-      "description": "Used Root FS",
+      "description": "Use Root FS",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -315,7 +396,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 1
+        "y": 4
       },
       "id": 154,
       "interval": null,
@@ -355,7 +436,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "100 - ((node_filesystem_avail_bytes{instance=~\"$node:$port\",projects=~\"$projects\",mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_size_bytes{instance=~\"$node:$port\",projects=~\"$projects\",mountpoint=\"/\",fstype!=\"rootfs\"})",
+          "expr": "100 - ((node_filesystem_avail_bytes{projects=\"$projects\", instance=~\"$node.*\",mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_size_bytes{projects=\"$projects\", instance=~\"$node.*\",mountpoint=\"/\",fstype!=\"rootfs\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -363,7 +444,7 @@
         }
       ],
       "thresholds": "20,60",
-      "title": "Used Root FS",
+      "title": "Usage Root FS",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -399,7 +480,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 1
+        "y": 4
       },
       "id": 19,
       "interval": null,
@@ -439,7 +520,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(node_load1{instance=~\"$node:$port\",projects=~\"$projects\"}) /  count(count(node_cpu_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}) by (cpu)) * 100",
+          "expr": "avg(node_load1{projects=\"$projects\", instance=~\"$node.*\"}) /  count(count(node_cpu_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}) by (cpu)) * 100",
+          "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
           "refId": "A",
@@ -483,7 +565,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 1
+        "y": 4
       },
       "id": 155,
       "interval": null,
@@ -523,7 +605,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(node_load5{instance=~\"$node:$port\",projects=~\"$projects\"}) /  count(count(node_cpu_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}) by (cpu)) * 100",
+          "expr": "avg(node_load5{projects=\"$projects\", instance=~\"$node.*\"}) /  count(count(node_cpu_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}) by (cpu)) * 100",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -550,7 +632,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 8
       },
       "id": 262,
       "panels": [],
@@ -581,7 +663,7 @@
         "h": 3,
         "w": 4,
         "x": 0,
-        "y": 6
+        "y": 9
       },
       "id": 14,
       "interval": null,
@@ -621,7 +703,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "count(count(node_cpu_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}) by (cpu))",
+          "expr": "count(count(node_cpu_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}) by (cpu))",
+          "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
           "step": 900
@@ -630,7 +713,7 @@
       "thresholds": "",
       "title": "CPU Cores",
       "type": "singlestat",
-      "valueFontSize": "50%",
+      "valueFontSize": "100%",
       "valueMaps": [
         {
           "op": "=",
@@ -664,7 +747,7 @@
         "h": 3,
         "w": 4,
         "x": 4,
-        "y": 6
+        "y": 9
       },
       "id": 75,
       "interval": null,
@@ -704,7 +787,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+          "expr": "node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
+          "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
           "step": 900
@@ -713,7 +797,7 @@
       "thresholds": "",
       "title": "Total RAM",
       "type": "singlestat",
-      "valueFontSize": "50%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
@@ -747,7 +831,7 @@
         "h": 3,
         "w": 4,
         "x": 8,
-        "y": 6
+        "y": 9
       },
       "id": 18,
       "interval": null,
@@ -787,7 +871,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_memory_SwapTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+          "expr": "node_memory_SwapTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
+          "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
           "step": 900
@@ -796,7 +881,7 @@
       "thresholds": "",
       "title": "Total SWAP",
       "type": "singlestat",
-      "valueFontSize": "50%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
@@ -830,7 +915,7 @@
         "h": 3,
         "w": 4,
         "x": 12,
-        "y": 6
+        "y": 9
       },
       "id": 23,
       "interval": null,
@@ -870,7 +955,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_filesystem_size_bytes{instance=~\"$node:$port\",projects=~\"$projects\",mountpoint=\"/\",fstype!=\"rootfs\"}",
+          "expr": "node_filesystem_size_bytes{projects=\"$projects\", instance=~\"$node.*\",mountpoint=\"/\",fstype!=\"rootfs\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -881,7 +966,7 @@
       "thresholds": "70,90",
       "title": "Total RootFS",
       "type": "singlestat",
-      "valueFontSize": "50%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
@@ -915,7 +1000,7 @@
         "h": 3,
         "w": 4,
         "x": 16,
-        "y": 6
+        "y": 9
       },
       "id": 17,
       "interval": null,
@@ -955,7 +1040,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_load1{instance=~\"$node:$port\",projects=~\"$projects\"}",
+          "expr": "node_load1{projects=\"$projects\", instance=~\"$node.*\"}",
+          "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
           "refId": "A",
@@ -965,7 +1051,7 @@
       "thresholds": "",
       "title": "System Load (1m avg)",
       "type": "singlestat",
-      "valueFontSize": "50%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
@@ -999,7 +1085,7 @@
         "h": 3,
         "w": 4,
         "x": 20,
-        "y": 6
+        "y": 9
       },
       "hideTimeOverride": true,
       "id": 15,
@@ -1039,7 +1125,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "node_time_seconds{instance=~\"$node:$port\",projects=~\"$projects\"} - node_boot_time_seconds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+          "expr": "node_time_seconds{projects=\"$projects\", instance=~\"$node.*\"} - node_boot_time_seconds{projects=\"$projects\", instance=~\"$node.*\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
@@ -1066,7 +1152,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 12
       },
       "id": 263,
       "panels": [
@@ -1098,7 +1184,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 10
+            "y": 13
           },
           "id": 77,
           "legend": {
@@ -1151,7 +1237,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1160,7 +1246,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='user',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1169,7 +1255,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode='iowait',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Busy Iowait",
@@ -1177,7 +1263,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=~\".*irq\",projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Busy IRQs",
@@ -1185,7 +1271,7 @@
               "step": 240
             },
             {
-              "expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Busy Other",
@@ -1193,7 +1279,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(rate(node_cpu_seconds_total{mode='idle',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Idle",
@@ -1276,7 +1362,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 10
+            "y": 13
           },
           "id": 78,
           "legend": {
@@ -1327,7 +1413,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1336,7 +1422,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_MemFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - (node_memory_Cached_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} + node_memory_Buffers_bytes{instance=~\"$node:$port\",projects=~\"$projects\"})",
+              "expr": "node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_MemFree_bytes{projects=\"$projects\", instance=~\"$node.*\"} - (node_memory_Cached_bytes{projects=\"$projects\", instance=~\"$node.*\"} + node_memory_Buffers_bytes{projects=\"$projects\", instance=~\"$node.*\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1345,7 +1431,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_Cached_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} + node_memory_Buffers_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Cached_bytes{projects=\"$projects\", instance=~\"$node.*\"} + node_memory_Buffers_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RAM Cache + Buffer",
@@ -1353,7 +1439,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_MemFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_MemFree_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RAM Free",
@@ -1361,7 +1447,7 @@
               "step": 240
             },
             {
-              "expr": "(node_memory_SwapTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_SwapFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"})",
+              "expr": "(node_memory_SwapTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_SwapFree_bytes{projects=\"$projects\", instance=~\"$node.*\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SWAP Used",
@@ -1421,7 +1507,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 13
       },
       "id": 264,
       "panels": [
@@ -1461,7 +1547,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 11
+            "y": 14
           },
           "id": 74,
           "legend": {
@@ -1526,7 +1612,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(node_network_receive_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "rate(node_network_receive_bytes_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "recv {{device}}",
@@ -1534,7 +1620,7 @@
               "step": 240
             },
             {
-              "expr": "rate(node_network_transmit_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "rate(node_network_transmit_bytes_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "trans {{device}} ",
@@ -1597,7 +1683,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 11
+            "y": 14
           },
           "height": "",
           "id": 152,
@@ -1629,7 +1715,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "100 - ((node_filesystem_avail_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'} * 100) / node_filesystem_size_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'})",
+              "expr": "100 - ((node_filesystem_avail_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'} * 100) / node_filesystem_size_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{mountpoint}}",
@@ -1689,7 +1775,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 14
       },
       "id": 265,
       "panels": [
@@ -1717,15 +1803,15 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 19
+            "y": 15
           },
           "id": 3,
           "legend": {
             "alignAsTable": true,
             "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
+            "current": false,
+            "max": false,
+            "min": false,
             "rightSide": false,
             "show": true,
             "sideWidth": 250,
@@ -1750,7 +1836,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode=\"system\",instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode=\"system\",projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "interval": "10s",
               "intervalFactor": 2,
@@ -1759,7 +1845,7 @@
               "step": 20
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='user',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='user',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "User - Normal processes executing in user mode",
@@ -1767,7 +1853,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='nice',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='nice',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Nice - Niced processes executing in user mode",
@@ -1775,7 +1861,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Idle - Waiting for something to happen",
@@ -1783,7 +1869,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='iowait',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='iowait',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Iowait - Waiting for I/O to complete",
@@ -1791,7 +1877,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='irq',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='irq',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Irq - Servicing interrupts",
@@ -1799,7 +1885,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='softirq',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='softirq',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Softirq - Servicing softirqs",
@@ -1807,7 +1893,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='steal',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='steal',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Steal - Time spent in other operating systems when running in a virtualized environment",
@@ -1815,7 +1901,7 @@
               "step": 240
             },
             {
-              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='guest',instance=~\"$node:$port\",projects=~\"$projects\"}[5m])) * 100",
+              "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='guest',projects=\"$projects\", instance=~\"$node.*\"}[5m])) * 100",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Guest - Time spent running a virtual CPU for a guest operating system",
@@ -1825,6 +1911,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "CPU",
           "tooltip": {
@@ -1897,7 +1984,7 @@
             "h": 12,
             "w": 12,
             "x": 12,
-            "y": 19
+            "y": 15
           },
           "id": 24,
           "legend": {
@@ -1934,7 +2021,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_MemTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_MemFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_Buffers_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_Cached_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_Slab_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_PageTables_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_SwapCached_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_MemTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_MemFree_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_Buffers_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_Cached_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_Slab_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_PageTables_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_SwapCached_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1943,7 +2030,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_PageTables_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_PageTables_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1952,7 +2039,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_SwapCached_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_SwapCached_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SwapCache - Memory that keeps track of pages that have been fetched from swap but not yet been modified",
@@ -1960,7 +2047,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_Slab_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Slab_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1969,7 +2056,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_Cached_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Cached_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1978,7 +2065,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_Buffers_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Buffers_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1987,7 +2074,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_MemFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_MemFree_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -1996,7 +2083,7 @@
               "step": 240
             },
             {
-              "expr": "(node_memory_SwapTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"} - node_memory_SwapFree_bytes{instance=~\"$node:$port\",projects=~\"$projects\"})",
+              "expr": "(node_memory_SwapTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"} - node_memory_SwapFree_bytes{projects=\"$projects\", instance=~\"$node.*\"})",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -2005,7 +2092,7 @@
               "step": 240
             },
             {
-              "expr": "node_memory_HardwareCorrupted_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_HardwareCorrupted_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -2016,6 +2103,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Stack",
           "tooltip": {
@@ -2070,7 +2158,7 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 31
+            "y": 27
           },
           "id": 84,
           "legend": {
@@ -2131,7 +2219,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_network_receive_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_network_receive_bytes_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Receive",
@@ -2139,7 +2227,7 @@
               "step": 240
             },
             {
-              "expr": "irate(node_network_transmit_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_network_transmit_bytes_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Transmit",
@@ -2149,6 +2237,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic",
           "tooltip": {
@@ -2200,7 +2289,7 @@
             "h": 12,
             "w": 12,
             "x": 12,
-            "y": 31
+            "y": 27
           },
           "height": "",
           "id": 156,
@@ -2232,7 +2321,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_filesystem_size_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'} - node_filesystem_avail_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_size_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'} - node_filesystem_avail_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{mountpoint}}",
@@ -2242,6 +2331,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk Space Used",
           "tooltip": {
@@ -2292,7 +2382,7 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 43
+            "y": 39
           },
           "id": 229,
           "legend": {
@@ -2407,14 +2497,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_reads_completed_total{instance=~\"$node:$port\",projects=~\"$projects\",device=~\"[a-z]*[a-z]\"}[5m])",
+              "expr": "irate(node_disk_reads_completed_total{projects=\"$projects\", instance=~\"$node.*\",device=~\"[a-z]*[a-z]\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "{{device}} - Reads completed",
               "refId": "A",
               "step": 480
             },
             {
-              "expr": "irate(node_disk_writes_completed_total{instance=~\"$node:$port\",projects=~\"$projects\",device=~\"[a-z]*[a-z]\"}[5m])",
+              "expr": "irate(node_disk_writes_completed_total{projects=\"$projects\", instance=~\"$node.*\",device=~\"[a-z]*[a-z]\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Writes completed",
               "refId": "B",
@@ -2423,6 +2515,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk IOps",
           "tooltip": {
@@ -2476,7 +2569,7 @@
             "h": 12,
             "w": 12,
             "x": 12,
-            "y": 43
+            "y": 39
           },
           "id": 42,
           "legend": {
@@ -2532,19 +2625,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_read_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\",device=~\"[a-z]*[a-z]\"}[5m])",
+              "expr": "irate(node_disk_read_bytes_total{projects=\"$projects\", instance=~\"$node.*\",device=~\"[a-z]*[a-z]\"}[5m])",
               "format": "time_series",
               "hide": false,
-              "intervalFactor": 2,
+              "intervalFactor": 1,
               "legendFormat": "{{device}} - Successfully read bytes",
               "refId": "A",
               "step": 240
             },
             {
-              "expr": "irate(node_disk_written_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\",device=~\"[a-z]*[a-z]\"}[5m])",
+              "expr": "irate(node_disk_written_bytes_total{projects=\"$projects\", instance=~\"$node.*\",device=~\"[a-z]*[a-z]\"}[5m])",
               "format": "time_series",
               "hide": false,
-              "intervalFactor": 2,
+              "intervalFactor": 1,
               "legendFormat": "{{device}} - Successfully written bytes",
               "refId": "B",
               "step": 240
@@ -2552,6 +2645,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "I/O Usage Read / Write",
           "tooltip": {
@@ -2605,7 +2699,7 @@
             "h": 12,
             "w": 12,
             "x": 0,
-            "y": 55
+            "y": 51
           },
           "id": 127,
           "legend": {
@@ -2636,7 +2730,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_io_time_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\",device=~\"[a-z]*[a-z]\"} [5m])",
+              "expr": "irate(node_disk_io_time_seconds_total{projects=\"$projects\", instance=~\"$node.*\",device=~\"[a-z]*[a-z]\"} [5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -2647,6 +2741,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "I/O Usage Times",
           "tooltip": {
@@ -2696,7 +2791,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 15
       },
       "id": 266,
       "panels": [
@@ -2730,7 +2825,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 68
+            "y": 9
           },
           "id": 136,
           "legend": {
@@ -2760,7 +2855,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Inactive_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Inactive_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Inactive - Memory which has been less recently used.  It is more eligible to be reclaimed for other purposes",
@@ -2768,7 +2863,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Active_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Active_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Active - Memory that has been used more recently and usually not reclaimed unless absolutely necessary",
@@ -2778,6 +2873,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Active / Inactive",
           "tooltip": {
@@ -2846,7 +2942,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 68
+            "y": 9
           },
           "id": 135,
           "legend": {
@@ -2885,7 +2981,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Committed_AS_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Committed_AS_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Committed_AS - Amount of memory presently allocated on the system",
@@ -2893,7 +2989,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_CommitLimit_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_CommitLimit_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "CommitLimit - Amount of  memory currently available to be allocated on the system",
@@ -2903,6 +2999,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Commited",
           "tooltip": {
@@ -2971,7 +3068,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 78
+            "y": 19
           },
           "id": 191,
           "legend": {
@@ -3001,7 +3098,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Inactive_file_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Inactive_file_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3010,7 +3107,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Inactive_anon_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Inactive_anon_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3019,7 +3116,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Active_file_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Active_file_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3028,7 +3125,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Active_anon_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Active_anon_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3039,6 +3136,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Active / Inactive Detail",
           "tooltip": {
@@ -3109,7 +3207,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 78
+            "y": 19
           },
           "id": 130,
           "legend": {
@@ -3139,7 +3237,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Writeback_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Writeback_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Writeback - Memory which is actively being written back to disk",
@@ -3147,7 +3245,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_WritebackTmp_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_WritebackTmp_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "WritebackTmp - Memory used by FUSE for temporary writeback buffers",
@@ -3155,7 +3253,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Dirty_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Dirty_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Dirty - Memory which is waiting to get written back to the disk",
@@ -3165,6 +3263,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Writeback and Dirty",
           "tooltip": {
@@ -3233,7 +3332,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 88
+            "y": 29
           },
           "id": 138,
           "legend": {
@@ -3263,7 +3362,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Mapped_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Mapped_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Mapped - Used memory in mapped pages files which have been mmaped, such as libraries",
@@ -3271,7 +3370,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Shmem_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Shmem_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Shmem - Used shared memory (shared between several processes, thus including RAM disks)",
@@ -3281,6 +3380,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Shared and Mapped",
           "tooltip": {
@@ -3351,7 +3451,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 88
+            "y": 29
           },
           "id": 131,
           "legend": {
@@ -3381,7 +3481,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_SUnreclaim_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_SUnreclaim_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SUnreclaim - Part of Slab, that cannot be reclaimed on memory pressure",
@@ -3389,7 +3489,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_SReclaimable_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_SReclaimable_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SReclaimable - Part of Slab, that might be reclaimed, such as caches",
@@ -3399,6 +3499,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Slab",
           "tooltip": {
@@ -3468,7 +3569,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 98
+            "y": 39
           },
           "id": 70,
           "legend": {
@@ -3498,7 +3599,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_VmallocChunk_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_VmallocChunk_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3507,7 +3608,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_VmallocTotal_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_VmallocTotal_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3516,7 +3617,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_VmallocUsed_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_VmallocUsed_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -3527,6 +3628,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Vmalloc",
           "tooltip": {
@@ -3595,7 +3697,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 98
+            "y": 39
           },
           "id": 159,
           "legend": {
@@ -3625,7 +3727,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Bounce_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Bounce_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Bounce - Memory used for block device bounce buffers",
@@ -3635,6 +3737,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Bounce",
           "tooltip": {
@@ -3704,7 +3807,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 108
+            "y": 49
           },
           "id": 129,
           "legend": {
@@ -3739,7 +3842,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_AnonHugePages_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_AnonHugePages_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "AnonHugePages - Memory in anonymous huge pages",
@@ -3747,7 +3850,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_AnonPages_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_AnonPages_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "AnonPages - Memory in user pages not backed by files",
@@ -3757,6 +3860,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Anonymous",
           "tooltip": {
@@ -3825,7 +3929,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 108
+            "y": 49
           },
           "id": 160,
           "legend": {
@@ -3855,7 +3959,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_KernelStack_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_KernelStack_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "KernelStack - Kernel memory stack. This is not reclaimable",
@@ -3865,6 +3969,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Kernel",
           "tooltip": {
@@ -3934,7 +4039,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 118
+            "y": 59
           },
           "id": 140,
           "legend": {
@@ -3964,7 +4069,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_HugePages_Free{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_HugePages_Free{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "HugePages_Free - Huge pages in the pool that are not yet allocated",
@@ -3972,7 +4077,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_HugePages_Rsvd{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_HugePages_Rsvd{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "HugePages_Rsvd - Huge pages for which a commitment to allocate from the pool has been made, but no allocation has yet been made",
@@ -3980,7 +4085,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_HugePages_Surp{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_HugePages_Surp{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "HugePages_Surp - Huge pages in the pool above the value in /proc/sys/vm/nr_hugepages",
@@ -3990,6 +4095,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory HugePages Counter",
           "tooltip": {
@@ -4059,7 +4165,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 118
+            "y": 59
           },
           "id": 71,
           "legend": {
@@ -4089,7 +4195,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_HugePages_Total{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_HugePages_Total{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "HugePages - Total size of the pool of huge pages",
@@ -4097,7 +4203,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Hugepagesize_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Hugepagesize_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Hugepagesize - Huge Page size",
@@ -4107,6 +4213,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory HugePages Size",
           "tooltip": {
@@ -4176,7 +4283,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 128
+            "y": 69
           },
           "id": 128,
           "legend": {
@@ -4208,7 +4315,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_DirectMap1G{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_DirectMap1G{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "DirectMap1G - Amount of pages mapped as this size",
@@ -4216,7 +4323,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_DirectMap2M_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_DirectMap2M_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -4225,7 +4332,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_DirectMap4k_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_DirectMap4k_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -4236,6 +4343,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory DirectMap",
           "tooltip": {
@@ -4304,7 +4412,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 128
+            "y": 69
           },
           "id": 137,
           "legend": {
@@ -4334,7 +4442,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_Unevictable_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Unevictable_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Unevictable - Amount of unevictable memory that can't be swapped out for a variety of reasons",
@@ -4342,7 +4450,7 @@
               "step": 4
             },
             {
-              "expr": "node_memory_Mlocked_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_Mlocked_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "MLocked - Size of pages locked to memory using the mlock() system call",
@@ -4352,6 +4460,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Unevictable and MLocked",
           "tooltip": {
@@ -4422,7 +4531,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 138
+            "y": 79
           },
           "id": 132,
           "legend": {
@@ -4452,7 +4561,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_memory_NFS_Unstable_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_memory_NFS_Unstable_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "NFS Unstable - Memory in NFS pages sent to the server, but not yet commited to the storage",
@@ -4462,6 +4571,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory NFS",
           "tooltip": {
@@ -4511,7 +4621,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 16
       },
       "id": 267,
       "panels": [
@@ -4526,7 +4636,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 21
+            "y": 65
           },
           "id": 176,
           "legend": {
@@ -4560,7 +4670,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_vmstat_pgpgin{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pgpgin{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pagesin - Page in operations",
@@ -4568,7 +4678,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_vmstat_pgpgout{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pgpgout{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pagesout - Page out operations",
@@ -4578,6 +4688,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Pages In / Out",
           "tooltip": {
@@ -4627,7 +4738,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 21
+            "y": 65
           },
           "id": 22,
           "legend": {
@@ -4661,7 +4772,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_vmstat_pswpin{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pswpin{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pswpin - Pages swapped in",
@@ -4669,7 +4780,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_vmstat_pswpout{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pswpout{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pswpout - Pages swapped out",
@@ -4679,6 +4790,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Pages Swap In / Out",
           "tooltip": {
@@ -4747,7 +4859,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 31
+            "y": 75
           },
           "id": 175,
           "legend": {
@@ -4783,7 +4895,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_vmstat_pgfault{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pgfault{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pgfault - Page major and minor fault operations",
@@ -4791,7 +4903,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_vmstat_pgmajfault{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pgmajfault{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pgmajfault - Major page fault operations",
@@ -4799,7 +4911,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_vmstat_pgfault{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])  - irate(node_vmstat_pgmajfault{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_vmstat_pgfault{projects=\"$projects\", instance=~\"$node.*\"}[5m])  - irate(node_vmstat_pgmajfault{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Pgminfault - Minnor page fault operations",
@@ -4809,6 +4921,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Memory Page Faults",
           "tooltip": {
@@ -4858,7 +4971,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 17
       },
       "id": 269,
       "panels": [
@@ -4873,7 +4986,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 22
+            "y": 11
           },
           "id": 8,
           "legend": {
@@ -4902,7 +5015,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_context_switches_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_context_switches_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Context switches",
@@ -4910,7 +5023,7 @@
               "step": 240
             },
             {
-              "expr": "irate(node_intr_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_intr_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Interrupts",
@@ -4920,6 +5033,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Context Switches / Interrupts",
           "tooltip": {
@@ -4969,7 +5083,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 22
+            "y": 11
           },
           "id": 7,
           "legend": {
@@ -4998,7 +5112,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_load1{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_load1{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "Load 1m",
@@ -5006,7 +5120,7 @@
               "step": 480
             },
             {
-              "expr": "node_load5{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_load5{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "Load 5m",
@@ -5014,7 +5128,7 @@
               "step": 480
             },
             {
-              "expr": "node_load15{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_load15{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "Load 15m",
@@ -5024,6 +5138,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "System Load",
           "tooltip": {
@@ -5073,7 +5188,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 21
           },
           "id": 259,
           "legend": {
@@ -5111,7 +5226,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_intr_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_intr_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -5122,6 +5237,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Interrupts Detail",
           "tooltip": {
@@ -5171,7 +5287,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 32
+            "y": 21
           },
           "id": 64,
           "legend": {
@@ -5204,7 +5320,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "process_max_fds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "process_max_fds{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Maximum open file descriptors",
@@ -5212,7 +5329,8 @@
               "step": 240
             },
             {
-              "expr": "process_open_fds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "process_open_fds{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Open file descriptors",
@@ -5222,6 +5340,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "File Descriptors",
           "tooltip": {
@@ -5271,7 +5390,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 42
+            "y": 31
           },
           "id": 151,
           "legend": {
@@ -5299,7 +5418,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_entropy_available_bits{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_entropy_available_bits{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Entropy available to random number generators",
@@ -5309,6 +5428,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Entropy",
           "tooltip": {
@@ -5358,7 +5478,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 42
+            "y": 31
           },
           "id": 62,
           "legend": {
@@ -5386,7 +5506,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_procs_blocked{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_procs_blocked{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Processes blocked waiting for I/O to complete",
@@ -5394,7 +5514,7 @@
               "step": 240
             },
             {
-              "expr": "node_procs_running{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_procs_running{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Processes in runnable state",
@@ -5404,6 +5524,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Processes State",
           "tooltip": {
@@ -5453,7 +5574,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 52
+            "y": 41
           },
           "id": 148,
           "legend": {
@@ -5481,7 +5602,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(node_forks_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "rate(node_forks_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -5492,6 +5613,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Processes  Forks",
           "tooltip": {
@@ -5541,7 +5663,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 52
+            "y": 41
           },
           "id": 149,
           "legend": {
@@ -5568,7 +5690,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "process_virtual_memory_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "process_virtual_memory_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Processes virtual memory size in bytes",
@@ -5576,7 +5699,8 @@
               "step": 240
             },
             {
-              "expr": "process_resident_memory_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "process_resident_memory_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Processes resident memory size in bytes",
@@ -5586,6 +5710,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Processes Memory",
           "tooltip": {
@@ -5636,7 +5761,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 62
+            "y": 51
           },
           "id": 168,
           "legend": {
@@ -5668,7 +5793,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_timex_sync_status{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_timex_sync_status{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -5677,7 +5802,7 @@
               "step": 240
             },
             {
-              "expr": "node_timex_frequency_adjustment_ratio{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_timex_frequency_adjustment_ratio{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -5688,6 +5813,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Time Syncronized Status",
           "tooltip": {
@@ -5738,7 +5864,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 62
+            "y": 51
           },
           "id": 260,
           "legend": {
@@ -5770,7 +5896,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_timex_estimated_error_seconds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_timex_estimated_error_seconds{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -5780,7 +5906,7 @@
               "step": 240
             },
             {
-              "expr": "node_timex_offset_seconds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_timex_offset_seconds{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -5790,7 +5916,7 @@
               "step": 240
             },
             {
-              "expr": "node_timex_maxerror_seconds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_timex_maxerror_seconds{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -5802,6 +5928,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Time Syncronized Drift",
           "tooltip": {
@@ -5851,7 +5978,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 72
+            "y": 61
           },
           "id": 158,
           "legend": {
@@ -5889,7 +6016,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_hwmon_temp_celsius{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_hwmon_temp_celsius{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -5898,7 +6025,7 @@
               "step": 240
             },
             {
-              "expr": "node_hwmon_temp_crit_alarm_celsius{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_hwmon_temp_crit_alarm_celsius{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": true,
               "interval": "",
@@ -5908,7 +6035,7 @@
               "step": 240
             },
             {
-              "expr": "node_hwmon_temp_crit_celsius{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_hwmon_temp_crit_celsius{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -5917,7 +6044,7 @@
               "step": 240
             },
             {
-              "expr": "node_hwmon_temp_crit_hyst_celsius{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_hwmon_temp_crit_hyst_celsius{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": true,
               "interval": "",
@@ -5927,7 +6054,7 @@
               "step": 240
             },
             {
-              "expr": "node_hwmon_temp_max_celsius{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_hwmon_temp_max_celsius{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": true,
               "interval": "",
@@ -5939,6 +6066,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Hardware temperature monitor",
           "tooltip": {
@@ -5988,7 +6116,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 18
       },
       "id": 270,
       "panels": [
@@ -6004,7 +6132,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 23
+            "y": 12
           },
           "id": 9,
           "legend": {
@@ -6120,14 +6248,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_reads_completed_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_reads_completed_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "{{device}} - Reads completed",
               "refId": "A",
               "step": 8
             },
             {
-              "expr": "irate(node_disk_writes_completed_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_writes_completed_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Writes completed",
               "refId": "B",
@@ -6136,6 +6266,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk IOps Completed",
           "tooltip": {
@@ -6186,7 +6317,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 23
+            "y": 12
           },
           "id": 33,
           "legend": {
@@ -6301,7 +6432,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_read_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_read_bytes_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "{{device}} - Read bytes",
@@ -6309,7 +6440,7 @@
               "step": 8
             },
             {
-              "expr": "irate(node_disk_written_bytes_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_written_bytes_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Written bytes",
@@ -6319,6 +6450,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk R/W Data",
           "tooltip": {
@@ -6369,7 +6501,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 33
+            "y": 22
           },
           "id": 37,
           "legend": {
@@ -6486,7 +6618,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_read_time_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_read_time_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "hide": false,
               "intervalFactor": 4,
               "legendFormat": "{{device}} - Read time ms",
@@ -6494,7 +6627,8 @@
               "step": 8
             },
             {
-              "expr": "irate(node_disk_write_time_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_write_time_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Write time ms",
@@ -6504,6 +6638,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk R/W Time",
           "tooltip": {
@@ -6554,7 +6689,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 33
+            "y": 22
           },
           "id": 35,
           "legend": {
@@ -6667,7 +6802,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_io_time_weighted_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_io_time_weighted_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "{{device}} - IO time weighted",
               "refId": "A",
@@ -6676,6 +6812,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk IOs Weighted",
           "tooltip": {
@@ -6726,7 +6863,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 43
+            "y": 32
           },
           "id": 133,
           "legend": {
@@ -6843,14 +6980,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_reads_merged_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_reads_merged_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Read merged",
               "refId": "C",
               "step": 4
             },
             {
-              "expr": "irate(node_disk_writes_merged_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_writes_merged_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Write merged",
               "refId": "D",
@@ -6859,6 +6998,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk R/W Merged",
           "tooltip": {
@@ -6909,7 +7049,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 43
+            "y": 32
           },
           "id": 36,
           "legend": {
@@ -7022,7 +7162,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_io_time_seconds_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_io_time_seconds_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "{{device}} - IO time ms",
               "refId": "A",
@@ -7031,6 +7172,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Milliseconds Spent Doing I/Os",
           "tooltip": {
@@ -7081,7 +7223,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 53
+            "y": 42
           },
           "id": 34,
           "legend": {
@@ -7194,7 +7336,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_disk_io_now{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_disk_io_now{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "{{device}} - IO now",
               "refId": "A",
@@ -7203,6 +7346,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Disk IOs Current in Progress",
           "tooltip": {
@@ -7253,7 +7397,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 53
+            "y": 42
           },
           "id": 66,
           "legend": {
@@ -7363,7 +7507,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_textfile_scrape_error{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_textfile_scrape_error{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "Textfile scrape error (1 = true)",
               "refId": "A",
@@ -7372,6 +7517,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Open Error File",
           "tooltip": {
@@ -7421,7 +7567,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 19
       },
       "id": 271,
       "panels": [
@@ -7438,7 +7584,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 24
+            "y": 13
           },
           "id": 43,
           "legend": {
@@ -7467,7 +7613,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_filesystem_avail_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_avail_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -7477,7 +7623,7 @@
               "step": 4
             },
             {
-              "expr": "node_filesystem_free_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_free_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "hide": true,
               "intervalFactor": 2,
@@ -7486,7 +7632,7 @@
               "step": 2
             },
             {
-              "expr": "node_filesystem_size_bytes{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_size_bytes{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "hide": true,
               "intervalFactor": 2,
@@ -7497,6 +7643,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Filesystem space available",
           "tooltip": {
@@ -7547,7 +7694,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 24
+            "y": 13
           },
           "id": 41,
           "legend": {
@@ -7576,7 +7723,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_filesystem_files_free{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_files_free{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -7587,6 +7734,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "File Nodes Free",
           "tooltip": {
@@ -7604,7 +7752,7 @@
           },
           "yaxes": [
             {
-              "format": "short",
+              "format": "decbytes",
               "label": "File Nodes",
               "logBase": 1,
               "max": null,
@@ -7637,7 +7785,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 34
+            "y": 23
           },
           "id": 28,
           "legend": {
@@ -7665,7 +7813,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_filefd_maximum{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_filefd_maximum{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 4,
               "legendFormat": "Max open files",
@@ -7673,7 +7821,7 @@
               "step": 8
             },
             {
-              "expr": "node_filefd_allocated{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_filefd_allocated{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Open files",
@@ -7683,6 +7831,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "File Descriptor",
           "tooltip": {
@@ -7733,7 +7882,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 34
+            "y": 23
           },
           "id": 219,
           "legend": {
@@ -7762,7 +7911,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_filesystem_files{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_files{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -7773,6 +7922,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "File Nodes Size",
           "tooltip": {
@@ -7826,7 +7976,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 44
+            "y": 33
           },
           "id": 44,
           "legend": {
@@ -7857,7 +8007,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_filesystem_readonly{instance=~\"$node:$port\",projects=~\"$projects\",device!~'rootfs'}",
+              "expr": "node_filesystem_readonly{projects=\"$projects\", instance=~\"$node.*\",device!~'rootfs'}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{mountpoint}} - ReadOnly",
@@ -7867,6 +8017,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Filesystem in ReadOnly",
           "tooltip": {
@@ -7916,7 +8067,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 20
       },
       "id": 272,
       "panels": [
@@ -7936,7 +8087,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 25
+            "y": 44
           },
           "id": 60,
           "legend": {
@@ -7998,7 +8149,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_network_receive_packets_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_network_receive_packets_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Receive",
@@ -8006,7 +8157,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_network_transmit_packets_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_network_transmit_packets_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Transmit",
@@ -8016,6 +8167,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic by Packets",
           "tooltip": {
@@ -8065,7 +8217,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 25
+            "y": 44
           },
           "id": 142,
           "legend": {
@@ -8131,7 +8283,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_network_receive_errs_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_network_receive_errs_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Receive errors",
@@ -8139,7 +8291,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_network_transmit_errs_total{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_network_transmit_errs_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{device}} - Rransmit errors",
@@ -8149,6 +8301,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Errors",
           "tooltip": {
@@ -8198,7 +8351,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 35
+            "y": 54
           },
           "id": 143,
           "legend": {
@@ -8282,6 +8435,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Drop",
           "tooltip": {
@@ -8331,7 +8485,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 35
+            "y": 54
           },
           "id": 141,
           "legend": {
@@ -8415,6 +8569,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Compressed",
           "tooltip": {
@@ -8464,7 +8619,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 45
+            "y": 64
           },
           "id": 146,
           "legend": {
@@ -8540,6 +8695,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Multicast",
           "tooltip": {
@@ -8589,7 +8745,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 45
+            "y": 64
           },
           "id": 144,
           "legend": {
@@ -8673,6 +8829,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Fifo",
           "tooltip": {
@@ -8722,7 +8879,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 55
+            "y": 74
           },
           "id": 145,
           "legend": {
@@ -8799,6 +8956,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Frame",
           "tooltip": {
@@ -8848,7 +9006,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 55
+            "y": 74
           },
           "id": 231,
           "legend": {
@@ -8912,6 +9070,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Carrier",
           "tooltip": {
@@ -8961,7 +9120,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 65
+            "y": 84
           },
           "id": 232,
           "legend": {
@@ -9025,6 +9184,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Network Traffic Colls",
           "tooltip": {
@@ -9074,7 +9234,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 65
+            "y": 84
           },
           "id": 230,
           "legend": {
@@ -9112,6 +9272,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "ARP Entries",
           "tooltip": {
@@ -9161,7 +9322,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 21
       },
       "id": 273,
       "panels": [
@@ -9176,7 +9337,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 26
+            "y": 15
           },
           "id": 63,
           "legend": {
@@ -9207,7 +9368,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_sockstat_TCP_alloc{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_TCP_alloc{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCP_alloc - Allocated sockets",
@@ -9215,7 +9376,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_TCP_inuse{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_TCP_inuse{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCP_inuse - Tcp sockets currently in use",
@@ -9223,7 +9384,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_TCP_mem{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_TCP_mem{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCP_mem - Used memory for tcp",
@@ -9231,7 +9392,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_TCP_orphan{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_TCP_orphan{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCP_orphan - Orphan sockets",
@@ -9239,7 +9400,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_TCP_tw{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_TCP_tw{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCP_tw - Sockets wating close",
@@ -9249,6 +9410,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Sockstat TCP",
           "tooltip": {
@@ -9298,7 +9460,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 26
+            "y": 15
           },
           "id": 124,
           "legend": {
@@ -9329,7 +9491,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_sockstat_UDPLITE_inuse{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_UDPLITE_inuse{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "UDPLITE_inuse - Udplite sockets currently in use",
@@ -9337,7 +9499,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_UDP_inuse{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_UDP_inuse{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "UDP_inuse - Udp sockets currently in use",
@@ -9345,7 +9507,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_UDP_mem{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_UDP_mem{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "UDP_mem - Used memory for udp",
@@ -9355,6 +9517,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Sockstat UDP",
           "tooltip": {
@@ -9404,7 +9567,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 36
+            "y": 25
           },
           "id": 126,
           "legend": {
@@ -9435,7 +9598,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_sockstat_sockets_used{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_sockets_used{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Sockets_used - Sockets currently in use",
@@ -9445,6 +9608,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Sockstat Used",
           "tooltip": {
@@ -9494,7 +9658,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 36
+            "y": 25
           },
           "id": 220,
           "legend": {
@@ -9525,7 +9689,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_sockstat_TCP_mem_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_TCP_mem_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCP_mem_bytes - ",
@@ -9533,7 +9697,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_UDP_mem_bytes{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_UDP_mem_bytes{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "UDP_mem_bytes - ",
@@ -9543,6 +9707,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Sockstat Memory Size",
           "tooltip": {
@@ -9592,7 +9757,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 46
+            "y": 35
           },
           "id": 125,
           "legend": {
@@ -9623,7 +9788,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_sockstat_FRAG_inuse{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_FRAG_inuse{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "FRAG_inuse - Frag sockets currently in use",
@@ -9631,7 +9796,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_FRAG_memory{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_FRAG_memory{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "FRAG_memory - Used memory for frag",
@@ -9639,7 +9804,7 @@
               "step": 240
             },
             {
-              "expr": "node_sockstat_RAW_inuse{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_sockstat_RAW_inuse{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RAW_inuse - Raw sockets currently in use",
@@ -9649,6 +9814,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Sockstat FRAG / RAW",
           "tooltip": {
@@ -9698,7 +9864,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 22
       },
       "id": 274,
       "panels": [
@@ -9713,7 +9879,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 27
+            "y": 16
           },
           "height": "",
           "id": 81,
@@ -9748,7 +9914,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Ip_ForwDatagrams{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Ip_ForwDatagrams{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "ForwDatagrams - IP outforwdatagrams",
@@ -9756,7 +9922,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Ip_Forwarding{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Ip_Forwarding{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Forwarding - IP forwarding",
@@ -9766,6 +9932,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Netstat IP Forwarding",
           "tooltip": {
@@ -9815,7 +9982,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 27
+            "y": 16
           },
           "height": "",
           "id": 221,
@@ -9875,7 +10042,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_IpExt_InOctets{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_IpExt_InOctets{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InOctets - Received octets",
@@ -9883,7 +10050,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_IpExt_OutOctets{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_IpExt_OutOctets{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutOctets - Sent octets",
@@ -9893,6 +10060,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Netstat IP In / Out Octets",
           "tooltip": {
@@ -9942,7 +10110,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 23
       },
       "id": 275,
       "panels": [
@@ -9957,7 +10125,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 28
+            "y": 17
           },
           "height": "",
           "id": 52,
@@ -10003,7 +10171,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Tcp_InCsumErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_InCsumErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10012,7 +10180,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_InErrs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_InErrs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10021,7 +10189,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_InSegs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_InSegs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10030,7 +10198,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_OutRsts{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_OutRsts{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10039,7 +10207,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_OutSegs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_OutSegs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10048,7 +10216,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_RetransSegs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_RetransSegs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RetransSegs - Segments retransmitted - that is, the number of TCP segments transmitted containing one or more previously transmitted octets",
@@ -10058,6 +10226,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "TCP Segments",
           "tooltip": {
@@ -10107,7 +10276,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 28
+            "y": 17
           },
           "height": "",
           "id": 85,
@@ -10145,7 +10314,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_netstat_Tcp_CurrEstab{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_netstat_Tcp_CurrEstab{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10154,7 +10323,7 @@
               "step": 4
             },
             {
-              "expr": "node_netstat_Tcp_MaxConn{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_netstat_Tcp_MaxConn{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10165,6 +10334,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "TCP Connections",
           "tooltip": {
@@ -10214,7 +10384,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 38
+            "y": 27
           },
           "height": "",
           "id": 82,
@@ -10246,7 +10416,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_ActiveOpens{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "ActiveOpens - TCP connections that have made a direct transition to the SYN-SENT state from the CLOSED state",
@@ -10254,7 +10424,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_AttemptFails{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_AttemptFails{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "AttemptFails - TCP connections that have made a direct transition to the CLOSED state from either the SYN-SENT and SYN-RCVD",
@@ -10262,7 +10432,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_EstabResets{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_EstabResets{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "EstabResets - TCP connections that have made a direct transition to the CLOSED state from either the ESTABLISHED state or the CLOSE-WAIT state",
@@ -10270,7 +10440,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Tcp_PassiveOpens{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "PassiveOpens - TCP connections that have made a direct transition to the SYN-RCVD state from the LISTEN state",
@@ -10280,6 +10450,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "TCP Direct Transition",
           "tooltip": {
@@ -10329,7 +10500,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 24
       },
       "id": 276,
       "panels": [
@@ -10345,7 +10516,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 29
+            "y": 18
           },
           "height": "",
           "id": 91,
@@ -10392,7 +10563,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_TcpExt_SyncookiesFailed{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_SyncookiesFailed{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10401,7 +10572,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_SyncookiesRecv{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_SyncookiesRecv{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10410,7 +10581,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_SyncookiesSent{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_SyncookiesSent{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -10419,7 +10590,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPSYNChallenge{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPSYNChallenge{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SynChallenge - Challenge ACKs sent in response to SYN packets",
@@ -10427,7 +10598,8 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPChallengeACK{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPChallengeACK{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCPChallengeACK - Challenge ACKs sent (RFC 5961 3.2)",
               "refId": "B",
@@ -10436,6 +10608,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "TCP SynCookie / Challenge",
           "tooltip": {
@@ -10486,7 +10659,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 38
+            "y": 27
           },
           "height": "",
           "id": 104,
@@ -10520,7 +10693,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_TcpExt_BusyPollRxPackets{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_BusyPollRxPackets{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "BusyPollRxPackets - Low latency application-fetched packets",
@@ -10528,7 +10701,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_EmbryonicRsts{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_EmbryonicRsts{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "EmbryonicRsts - Resets received for embryonic SYN_RECV sockets",
@@ -10536,7 +10709,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_ListenOverflows{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_ListenOverflows{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "ListenOverflows - Times the listen queue of a socket overflowed",
@@ -10544,14 +10717,16 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPSchedulerFailed{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPSchedulerFailed{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCPSchedulerFailed - Times receiver scheduled too late for direct processing",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPMemoryPressures{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPMemoryPressures{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCPMemoryPressures - TCP ran low on memory",
               "refId": "C",
@@ -10560,6 +10735,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "TCP Issues",
           "tooltip": {
@@ -10610,7 +10786,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 38
+            "y": 27
           },
           "height": "",
           "id": 53,
@@ -10644,7 +10820,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_TcpExt_ListenDrops{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_ListenDrops{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "ListenDrops - SYNs to LISTEN sockets ignored",
@@ -10652,7 +10828,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_LockDroppedIcmps{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_LockDroppedIcmps{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "LockDroppedIcmps - ICMP packets dropped because socket was locked",
@@ -10660,7 +10836,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPDeferAcceptDrop{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPDeferAcceptDrop{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCPDeferAcceptDrop - Dropped ACK frames received by a socket in SYN_RECV state",
@@ -10668,7 +10844,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPBacklogDrop{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPBacklogDrop{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCPBacklogDrop - Packets dropped bacause the socket's receive queue was full",
@@ -10676,7 +10852,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_OutOfWindowIcmps{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_OutOfWindowIcmps{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutOfWindowIcmps - ICMP packets dropped because they were out-of-window",
@@ -10684,7 +10860,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_TcpExt_TCPMinTTLDrop{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_TcpExt_TCPMinTTLDrop{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "TCPMinTTLDrop - TCP packets dropped under minTTL condition",
@@ -10694,6 +10870,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "TCP DROPS",
           "tooltip": {
@@ -10743,7 +10920,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 25
       },
       "id": 277,
       "panels": [
@@ -10759,7 +10936,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 30
+            "y": 19
           },
           "height": "",
           "id": 55,
@@ -10805,7 +10982,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Udp_InDatagrams{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_InDatagrams{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InDatagrams - Datagrams received",
@@ -10813,7 +10990,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Udp_OutDatagrams{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_OutDatagrams{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutDatagrams - Datagrams sent",
@@ -10823,6 +11000,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "UDP In / Out",
           "tooltip": {
@@ -10872,7 +11050,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 40
+            "y": 29
           },
           "height": "",
           "id": 109,
@@ -10918,7 +11096,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Udp_InCsumErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_InCsumErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InCsumErrors - Datagrams with checksum errors",
@@ -10926,7 +11104,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Udp_InErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_InErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InErrors - Datagrams that could not be delivered to an application",
@@ -10934,7 +11112,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Udp_RcvbufErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_RcvbufErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RcvbufErrors - Datagrams for which not enough socket buffer memory to receive",
@@ -10942,7 +11120,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Udp_SndbufErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_SndbufErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SndbufErrors - Datagrams for which not enough socket buffer memory to transmit",
@@ -10950,7 +11128,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Udp_NoPorts{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Udp_NoPorts{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "NoPorts - Datagrams received on a port with no listener",
@@ -10960,6 +11138,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "UDP Errors",
           "tooltip": {
@@ -11009,7 +11188,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 40
+            "y": 29
           },
           "height": "",
           "id": 110,
@@ -11051,7 +11230,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_UdpLite_InCsumErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_UdpLite_InCsumErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InCsumErrors - Datagrams with checksum errors",
@@ -11059,7 +11238,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_UdpLite_InErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_UdpLite_InErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InErrors - Datagrams that could not be delivered to an application",
@@ -11067,7 +11246,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_UdpLite_RcvbufErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_UdpLite_RcvbufErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "RcvbufErrors - Datagrams for which not enough socket buffer memory to receive",
@@ -11075,7 +11254,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_UdpLite_SndbufErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_UdpLite_SndbufErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "SndbufErrors - Datagrams for which not enough socket buffer memory to transmit",
@@ -11083,7 +11262,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_UdpLite_NoPorts{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_UdpLite_NoPorts{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "NoPorts - Datagrams received on a port with no listener",
@@ -11093,6 +11272,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "UDP Lite Errors",
           "tooltip": {
@@ -11142,7 +11322,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 26
       },
       "id": 278,
       "panels": [
@@ -11158,7 +11338,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 31
+            "y": 20
           },
           "height": "",
           "id": 50,
@@ -11224,7 +11404,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Icmp_InErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_InErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InErrors - Messages which the entity received but determined as having ICMP-specific errors (bad ICMP checksums, bad length, etc.)",
@@ -11232,7 +11412,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Icmp_OutErrors{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_OutErrors{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutErrors - Messages which this entity did not send due to problems discovered within ICMP, such as a lack of buffers",
@@ -11240,7 +11420,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Icmp_InDestUnreachs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_InDestUnreachs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InDestUnreachs - Destination Unreachable messages received",
@@ -11248,7 +11428,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Icmp_OutDestUnreachs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_OutDestUnreachs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutDestUnreachs - Destination Unreachable messages sent",
@@ -11256,7 +11436,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_IcmpMsg_InType3{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_IcmpMsg_InType3{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -11265,7 +11445,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_IcmpMsg_OutType3{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_IcmpMsg_OutType3{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -11274,7 +11454,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_IcmpMsg_InType11{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_IcmpMsg_InType11{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -11285,6 +11465,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "ICMP Errors 1",
           "tooltip": {
@@ -11335,7 +11516,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 31
+            "y": 20
           },
           "height": "",
           "id": 115,
@@ -11381,7 +11562,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(node_netstat_Icmp_InMsgs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_InMsgs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InMsgs -  Messages which the entity received. Note that this counter includes all those counted by icmpInErrors",
@@ -11389,7 +11570,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Icmp_InRedirects{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_InRedirects{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "InRedirects - Redirect messages received",
@@ -11397,7 +11578,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Icmp_OutMsgs{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_OutMsgs{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutMsgs - Messages which this entity attempted to send. Note that this counter includes all those counted by icmpOutErrors",
@@ -11405,7 +11586,7 @@
               "step": 4
             },
             {
-              "expr": "irate(node_netstat_Icmp_OutRedirects{instance=~\"$node:$port\",projects=~\"$projects\"}[5m])",
+              "expr": "irate(node_netstat_Icmp_OutRedirects{projects=\"$projects\", instance=~\"$node.*\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "OutRedirects -  Redirect messages sent. For a host, this object will always be zero, since hosts do not send redirects",
@@ -11415,6 +11596,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "ICMP In / Out - Messages / Redirects",
           "tooltip": {
@@ -11464,7 +11646,1345 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 27
+      },
+      "id": 299,
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 21
+          },
+          "id": 283,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "Version",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "version",
+          "targets": [
+            {
+              "expr": "tomcat_info{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Server info",
+          "transparent": false,
+          "type": "singlestat",
+          "valueFontSize": "100%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 2,
+            "y": 25
+          },
+          "id": 285,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "count(tomcat_threads_active_total{projects=\"$projects\", instance=~\"$node.*\"})",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Active threads",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 6,
+            "y": 25
+          },
+          "id": 287,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "avg(tomcat_threads_max{projects=\"$projects\", instance=~\"$node.*\"})",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Max threads",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 10,
+            "y": 25
+          },
+          "id": 289,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "jvm_threads_daemon{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Java daemon threads",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 14,
+            "y": 25
+          },
+          "id": 291,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "jvm_threads_current{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Java current threads",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 18,
+            "y": 25
+          },
+          "id": 293,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "jvm_threads_deadlocked{projects=\"$projects\", instance=~\"$node.*\"}",
+              "format": "time_series",
+              "instant": true,
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Java deadlock threads",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 29
+          },
+          "id": 295,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "idelta(tomcat_requestprocessor_sent_bytes{projects=\"$projects\", instance=~\"$node.*\",name=\"http-nio-8080\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sent HTTP",
+              "refId": "A"
+            },
+            {
+              "expr": "idelta(tomcat_requestprocessor_received_bytes{projects=\"$projects\", instance=~\"$node.*\",name=\"http-nio-8080\"}[5m])",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 1,
+              "legendFormat": "Received HTTP",
+              "refId": "B"
+            },
+            {
+              "expr": "idelta(tomcat_requestprocessor_sent_bytes{projects=\"$projects\", instance=~\"$node.*\",name=\"ajp-nio-8009\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sent AJP",
+              "refId": "C"
+            },
+            {
+              "expr": "idelta(tomcat_requestprocessor_received_bytes{projects=\"$projects\", instance=~\"$node.*\",name=\"ajp-nio-8009\"}[5m])",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 1,
+              "legendFormat": "Received AJP",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Traffic send/recv",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "decbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": null,
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 29
+          },
+          "id": 297,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "idelta(tomcat_requestprocessor_request_count{projects=\"$projects\", instance=~\"$node.*\",name=\"http-nio-8080\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Request HTTP",
+              "refId": "A"
+            },
+            {
+              "expr": "idelta(tomcat_requestprocessor_error_count{projects=\"$projects\", instance=~\"$node.*\",name=\"http-nio-8080\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Error HTTP",
+              "refId": "B"
+            },
+            {
+              "expr": "idelta(tomcat_requestprocessor_request_count{projects=\"$projects\", instance=~\"$node.*\",name=\"ajp-nio-8009\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Request AJP",
+              "refId": "C"
+            },
+            {
+              "expr": "idelta(tomcat_requestprocessor_error_count{projects=\"$projects\", instance=~\"$node.*\",name=\"ajp-nio-8009\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Error AJP",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Request  count / error count",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Tomcat connection info",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 315,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "description": "Top 4 servlets average processing time per request in last 5 minutes",
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "id": 313,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "topk(5, idelta(servlet_request_seconds_count{projects=\"$projects\", instance=~\"$node.*\"}[5m]) / idelta(servlet_request_seconds_sum{projects=\"$projects\", instance=~\"$node.*\"}[5m]))",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "context:{{context}} , method:{{method}}",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Top 5 servlets average processing time per request",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": null,
+              "format": "ms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 0,
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 20,
+            "x": 0,
+            "y": 31
+          },
+          "id": 301,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(idelta(tomcat_session_created_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])) by (instance)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "New",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(idelta(tomcat_session_expired_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])) by (instance)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Expired",
+              "refId": "B"
+            },
+            {
+              "expr": "sum(idelta(tomcat_session_rejected_total{projects=\"$projects\", instance=~\"$node.*\"}[5m])) by (instance)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Rejected",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Session count",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 4,
+            "x": 20,
+            "y": 31
+          },
+          "id": 303,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(tomcat_session_active_total{projects=\"$projects\", instance=~\"$node.*\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Session current count",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 4,
+            "x": 20,
+            "y": 34
+          },
+          "id": 305,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(tomcat_session_alivetime_seconds_avg{projects=\"$projects\", instance=~\"$node.*\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Session alivetime avg",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 4,
+            "x": 20,
+            "y": 37
+          },
+          "id": 307,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(tomcat_session_expired_total{projects=\"$projects\", instance=~\"$node.*\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Session total expired",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": null,
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 40
+          },
+          "id": 309,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "topk(5, idelta(servlet_request_seconds_count{projects=\"$projects\", instance=~\"$node.*\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "context={{context}} , method={{method}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Top 5 servlet request count",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 0,
+          "fill": 1,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 40
+          },
+          "id": 311,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "topk(5, idelta(servlet_response_status_total{projects=\"$projects\", instance=~\"$node.*\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "context:{{context}} , status:{{status}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Top 5 servlet response status",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Tomcat servlet info",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
       },
       "id": 279,
       "panels": [
@@ -11480,7 +13000,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 23
           },
           "id": 40,
           "legend": {
@@ -11507,7 +13027,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_scrape_collector_duration_seconds{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_scrape_collector_duration_seconds{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -11518,6 +13038,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Node Exporter Scrape Time",
           "tooltip": {
@@ -11568,7 +13089,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 32
+            "y": 23
           },
           "id": 157,
           "legend": {
@@ -11595,7 +13116,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "node_scrape_collector_success{instance=~\"$node:$port\",projects=~\"$projects\"}",
+              "expr": "node_scrape_collector_success{projects=\"$projects\", instance=~\"$node.*\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -11606,6 +13127,7 @@
           ],
           "thresholds": [],
           "timeFrom": null,
+          "timeRegions": [],
           "timeShift": null,
           "title": "Node Exporter Scrape Success",
           "tooltip": {
@@ -11655,13 +13177,37 @@
   "style": "dark",
   "tags": [
     "prometheus",
-    "node exportor",
-    "clients",
-    "oneplanet",
-    "oneplanet-uat"
+    "Oneplanet",
+    "node_exporter",
+    "Linux"
   ],
   "templating": {
     "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "opuat-node-linux",
+          "value": "opuat-node-linux"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(up,group)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Group",
+        "multi": false,
+        "name": "group",
+        "options": [],
+        "query": "label_values(up,group)",
+        "refresh": 1,
+        "regex": "/op.*linux+.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
       {
         "allValue": null,
         "current": {
@@ -11669,14 +13215,14 @@
           "value": "Oneplanet"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(up, projects)",
+        "definition": "label_values(up{group=\"$group\"}, projects)",
         "hide": 0,
         "includeAll": false,
         "label": "Projects",
         "multi": false,
         "name": "projects",
         "options": [],
-        "query": "label_values(up, projects)",
+        "query": "label_values(up{group=\"$group\"}, projects)",
         "refresh": 1,
         "regex": "/Oneplanet/",
         "skipUrlSync": false,
@@ -11690,19 +13236,18 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
           "text": "192.168.135.19",
           "value": "192.168.135.19"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(up{projects=~\"$projects\"}, instance)",
+        "definition": "label_values(up{group=\"$group\",projects=~\"$projects\"}, instance)",
         "hide": 0,
         "includeAll": false,
         "label": "Host:",
         "multi": false,
         "name": "node",
         "options": [],
-        "query": "label_values(up{projects=~\"$projects\"}, instance)",
+        "query": "label_values(up{group=\"$group\",projects=~\"$projects\"}, instance)",
         "refresh": 1,
         "regex": "/(^192[^:]+):.*/",
         "skipUrlSync": false,
@@ -11712,36 +13257,11 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "9100",
-          "value": "9100"
-        },
-        "datasource": "Prometheus",
-        "definition": "label_values(up{instance=~\"$node:(.*)\"}, instance)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Port",
-        "multi": false,
-        "name": "port",
-        "options": [],
-        "query": "label_values(up{instance=~\"$node:(.*)\"}, instance)",
-        "refresh": 1,
-        "regex": "/[^:]+:(.*)/",
-        "skipUrlSync": false,
-        "sort": 3,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -11772,5 +13292,5 @@
   "timezone": "browser",
   "title": "Oneplanet - Linux Node",
   "uid": "dPbxv9sik",
-  "version": 1
+  "version": 2
 }

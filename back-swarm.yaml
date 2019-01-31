@@ -98,8 +98,7 @@ services:
     ports:
       - 9115:9115
     dns:
-      - 192.168.2.5
-      - 192.168.2.10
+      - localhost
     volumes:
       - './blackbox-exporter:/config'
     command: 

@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 3125,
   "graphTooltip": 1,
-  "iteration": 1542945443202,
+  "iteration": 1548825637971,
   "links": [],
   "panels": [
     {
@@ -85,7 +85,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "count(container_last_seen{image!=\"\", instance=~\"$server\"})",
+          "expr": "count(container_last_seen{image!=\"\",projects=\"$projects\", instance=~\"$server.*\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -172,7 +172,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{image!=\"\", instance=~\"$server\"})/1024/1024",
+          "expr": "sum(container_memory_usage_bytes{image!=\"\", projects=\"$projects\", instance=~\"$server.*\"})/1024/1024",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -259,7 +259,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_user_seconds_total{image!=\"\", instance=~\"$server\"}[5m]) * 100)",
+          "expr": "sum(rate(container_cpu_user_seconds_total{image!=\"\", projects=\"$projects\", instance=~\"$server.*\"}[5m]) * 100)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -325,7 +325,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_user_seconds_total{image!=\"\", instance=~\"$server\"}[5m]) * 100) by (name)",
+          "expr": "sum(rate(container_cpu_user_seconds_total{image!=\"\", projects=\"$projects\", instance=~\"$server.*\"}[5m]) * 100) by (name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}",
@@ -336,6 +336,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "CPU Usage",
       "tooltip": {
@@ -419,7 +420,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{image!=\"\", instance=~\"$server\"}) by (name)",
+          "expr": "sum(container_memory_usage_bytes{image!=\"\", instance=~\"$server.*\"}) by (name)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -431,6 +432,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Memory Usage",
       "tooltip": {
@@ -511,7 +513,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_network_receive_bytes_total{image!=\"\", instance=~\"$server\"}[5m])) by (name)",
+          "expr": "sum(irate(container_network_receive_bytes_total{image!=\"\", instance=~\"$server.*\"}[5m])) by (name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}",
@@ -522,6 +524,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Network Rx",
       "tooltip": {
@@ -601,7 +604,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_network_transmit_bytes_total{image!=\"\", instance=~\"$server\"}[5m])) by (name)",
+          "expr": "sum(irate(container_network_transmit_bytes_total{image!=\"\", instance=~\"$server.*\"}[5m])) by (name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}",
@@ -611,6 +614,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Network Tx",
       "tooltip": {
@@ -655,7 +659,8 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "docker"
+    "docker",
+    "swarm"
   ],
   "templating": {
     "list": [
@@ -663,21 +668,74 @@
         "allValue": null,
         "current": {
           "tags": [],
-          "text": "localhost:8080",
-          "value": "localhost:8080"
+          "text": "test-prome-container",
+          "value": "test-prome-container"
         },
         "datasource": "Prometheus",
+        "definition": "label_values(up,group)",
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Group",
         "multi": false,
-        "name": "server",
+        "name": "group",
         "options": [],
-        "query": "label_values(machine_memory_bytes, instance)",
+        "query": "label_values(up,group)",
+        "refresh": 1,
+        "regex": "/.*container.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "Demo2",
+          "value": "Demo2"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(up{group=\"$group\"},projects)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Projects",
+        "multi": false,
+        "name": "projects",
+        "options": [],
+        "query": "label_values(up{group=\"$group\"},projects)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 2,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "192.168.252.61",
+          "value": "192.168.252.61"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(up{group=\"$group\" , projects=\"$projects\"},instance)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Server",
+        "multi": false,
+        "name": "server",
+        "options": [],
+        "query": "label_values(up{group=\"$group\" , projects=\"$projects\"},instance)",
+        "refresh": 1,
+        "regex": "/(^192[^:]+):.*/",
+        "skipUrlSync": false,
+        "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -687,7 +745,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -716,6 +774,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Demo2 - Docker cluster monitoring",
+  "title": "All - Docker cluster monitoring",
+  "uid": "Mkv8t0lmz",
   "version": 1
 }

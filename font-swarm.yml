@@ -27,7 +27,7 @@ services:
     ports:
       - 9094:8080
     environment:
-      - "ALERTMANAGER_URIS=default:http://192.168.252.61:9093"
+      - "ALERTMANAGER_URIS=default:http://localhost:9093"
     deploy:
       mode: replicated
       replicas: 1

@@ -9,136 +9,37 @@ alerting:
   - scheme: http
     static_configs:
     - targets:
-      - "192.168.252.61:9093"
+      - "localhost:9093"
 
 rule_files:
-  - "alert.rules"
-  - "alwindows.rules"
+  # - "alert.rules"
+  # - "alwindows.rules"
+  # - "al-docker.rules"
 
 remote_write:
-  - url: "http://192.168.252.61:9201/write"
+  - url: "http://localhost:9201/write"
 
 remote_read:
-  - url: "http://192.168.252.61:9201/read"
+  - url: "http://localhost:9201/read"
 
 scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 10s
     scrape_timeout: 10s
     static_configs:
-      - targets: ['192.168.252.61:9090']
+      - targets: ['localhost:9090']
 
-  - job_name: 'node-exporter'
+  - job_name: 'prome-cluster'
     scrape_interval: 10s
     scrape_timeout: 10s
     static_configs:
       - targets: 
-        - '192.168.252.61:9100'
-        - '192.168.252.62:9100'
-        - '192.168.252.63:9100'
-        - '192.168.10.219:9100'
-        - '192.168.10.196:9100'
+        - 'localhost:9100'
         labels:
-          group: 'test-node-linux'
-          projects: 'Demo2'
-  
-  - job_name: 'influx-exporter'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: ['192.168.252.64:9100']
-        labels:
-          group: 'influxdb-linux'
-          projects: 'Demo2'
-  
-  - job_name: 'wmi-mb2c'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: ['192.168.122.9:9182']
-        labels:
-          group: 'mb2c-DNS-windows'
-          projects: 'MackroB2C'
+          group: 'prome-swarm-linux'
+          projects: 'Prometheus'
+          hostname: 'prome-cluster'
 
-  - job_name: 'node-gz'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: ['192.168.5.121:9100','192.168.10.74:9100']
-        labels:
-          group: 'gz-node-linux'
-          projects: 'Goodchoize'
-  
-  - job_name: 'node-op-uat'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: ['192.168.135.19:9100','192.168.135.54:9100']
-        labels:
-          group: 'opuat-node-linux'
-          projects: 'Oneplanet'
-
-  - job_name: 'wmi-exporter'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: 
-        - '192.168.10.164:9182'
-        labels:
-          group: 'test-node-windows'
-          projects: 'Demo1'
-          hostname: 'kittyCat'
-      - targets:
-        - '192.168.10.241:9182'
-        labels:
-          group: 'test-node-windows'
-          projects: 'Demo1'
-          hostname: 'MigthyDog'
-
-  - job_name: 'wmi-gz'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets:
-        - '192.168.5.107:9182'
-        - '192.168.5.109:9182'
-        - '192.168.5.122:9182'
-        - '192.168.5.117:9182'
-        - '192.168.5.119:9182'
-        - '192.168.5.209:9182'
-        - '192.168.5.233:9182'
-        - '192.168.10.237:9182'
-        - '192.168.10.236:9182'
-        - '192.168.10.245:9182'
-        - '192.168.10.247:9182'
-        - '192.168.10.230:9182'
-        - '192.168.10.239:9182'
-        - '192.168.10.139:9182'
-        - '192.168.7.23:9182'
-        - '192.168.2.14:9182'
-        - '192.168.2.11:9182'
-        labels:
-          group: 'gz-node-windows'
-          projects: 'Goodchoize'
-  
-  - job_name: 'tomcat-exporter'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: ['192.168.19.39:8080']
-        labels:
-          group: 'test-tomcat-exporter'
-          projects: 'Demo2'
-
-  - job_name: 'cadvisor'
-    scrape_interval: 10s
-    scrape_timeout: 10s
-    static_configs:
-      - targets: ['192.168.252.61:8080','192.168.10.219:9090']
-        labels:
-          group: 'test-container-exporter'
-          projects: 'Demo2'
-  
   - job_name: 'blackbox-web'
     scrape_interval: 10s
     scrape_timeout: 10s
@@ -147,44 +48,7 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-        - https://www.pantavanij.com
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=1
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=24
-        - https://ep.pantavanij.com/true
-        - https://www.opoversea.com/eps/Login/75
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=2
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=5
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=7
-        - https://cpallep.pantavanij.com
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=14
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=48
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=52
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=59
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=68
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=72
-        - https://buysite.pantavanij.com/ebd/WebDriver?ACT=Login&EID=73
-        - https://tmgep.pantavanij.com
-        - https://kbankep.pantavanij.com
-        - https://auction.pantavanij.com
-        - https://auction2.pantavanij.com
-        - https://auction3.pantavanij.com
-        - https://auction5.pantavanij.com
-        - https://auction9.pantavanij.com
-        - https://on-site.pantavanij.com
-        - http://azcp.car.pantavanij.com/OALC/firstpage.action
-        - https://auction10.pantavanij.com
-        - https://auction11.pantavanij.com
-        - http://tip.car.pantavanij.com
-        - http://tnn.car.pantavanij.com
-        - http://erfxonline.pantavanij.com
-        - https://www.goodchoiz.com
-        - https://www.makroclick.com/th
-        - https://www.makro.co.th/login
-        - http://192.168.252.34
-        - https://trueordering.pantavanij.com
-        - http://192.168.19.39:8080
-        - https://www.supplierwebwork.com
-        - https://cpallep.pantavanij.com
+        - https://www.google.com
         labels:
           group: 'test-web-monitor'
           projects: 'Demo4'
